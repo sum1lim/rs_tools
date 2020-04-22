@@ -1,0 +1,32 @@
+$ python3 K-Means.py
+Please provide bands collection path: ./tests/test1/input
+Please provide the NIR band image file(Ex. B08): B08
+Please provide the visible band image file(Ex. B02): B03
+NIR = ./tests/test1/input/B08.tiff
+VIS = ./tests/test1/input/B03.tiff
+Define the number of iterations: 10
+Define the number of classes from 1 to 7: 5
+Please provide the output file type(Ex. png, jpg, tiff): tiff
+
+
+$ python3 NDVI.py
+Please provide bands collection path: ./tests/test1/input
+Please provide the NIR band image file(Ex. B08): B08
+Please provide the visible band image file(Ex. B02): B04
+Please provide the output file type(Ex. png, jpg, tiff): jpg
+
+
+$ python3 RGB.py
+Extract(E) or Merge(M)?: m
+Please provide bands collection path: ./tests/test1/input
+Please provide an 'R' band image file(Ex. B04): B04
+Please provide a 'G' band image file(Ex. B03): B03
+Please provide a 'B' band image file(Ex. B02): B02
+Please provide the output file type(Ex. png, jpg, tiff): jpeg
+
+
+$ python3 RGB.py
+Extract(E) or Merge(M)?: e
+Please provide an image file path: ./tests/test1/B04+B03+B02.tiff
+Please provide the output file type(Ex. png, jpg, tiff): png
+
