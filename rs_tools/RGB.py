@@ -1,7 +1,7 @@
 import sys
 import re
-import RSreq
-RSreq.install()
+import rs_tools.RSreq as rq
+rq.install()
 import numpy
 import os
 from PIL import Image, ImageFile, ImageDraw
@@ -120,9 +120,9 @@ def main():
             B_out = re.sub("\.\w+", outExtension, band_name[2])
             
             try:
-                RSreq.output(file_path + R_out, RGB_dict["R"])
-                RSreq.output(file_path + G_out, RGB_dict["G"])
-                RSreq.output(file_path + B_out, RGB_dict["B"])
+                rq.output(file_path + R_out, RGB_dict["R"])
+                rq.output(file_path + G_out, RGB_dict["G"])
+                rq.output(file_path + B_out, RGB_dict["B"])
                 break
             except ValueError:
                 print("Not a valid file type")
@@ -173,7 +173,7 @@ def main():
             outExtension = "." + input("Please provide the output file type(Ex. png, jpg, tiff): ")
             outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
             try:
-                RSreq.output(outFile, pix_val)
+                rq.output(outFile, pix_val)
                 break
             except ValueError:
                 print("Not a valid file type")

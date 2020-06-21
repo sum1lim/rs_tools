@@ -11,7 +11,8 @@ setup(
     packages=['rs_tools'],
     include_package_data=True,
     scripts='''
-        ./scripts/RGB
+        ./scripts/RGB_merge
+        ./scripts/RGB_extract
         ./scripts/K_Means
         ./scripts/NDVI
     '''.split(),
