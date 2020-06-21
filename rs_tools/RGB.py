@@ -77,7 +77,7 @@ def extract(inFile, extension):
 
 
 
-def merge(Rfile, Gfile, Bfile):
+def merge(inDir, Rfile, Gfile, Bfile, extension):
     try:
         Rimage = Image.open(Rfile, 'r')
         Gimage = Image.open(Gfile, 'r')
@@ -103,83 +103,29 @@ def merge(Rfile, Gfile, Bfile):
             Rpix = Rimage.getpixel((column, row))[0]
             Gpix = Gimage.getpixel((column, row))[1]
             Bpix = Bimage.getpixel((column, row))[2]
-            #if(type(Rpix) is not int or type(Gpix) is not int or type(Bpix) is not int):
-            #    print("Images files restricted to have only 1 band each", file=sys.stderr)
-            #    exit(3)
             tmp_list.append((Rpix,Gpix,Bpix))
 
         pix_val.append(tmp_list)
 
-    return pix_val
-
-
-
-
-def main():
-    flag = input("Extract(E) or Merge(M)?: ")
-
-    if(flag.lower() == "e"):
-        None
-
-    elif(flag.lower() ==  "m"):
-
-        inDir = input("Please provide bands collection path: ")
+    directories = inDir.split("/")
+    file_path=""
+    for i in directories[:-1]:
+        file_path += i
+        file_path += "/"
+        
+    R_out = re.sub("\.\w+", "", Rfile)
+    R_out = re.sub(".*/", "", R_out)
+    G_out = re.sub("\.\w+", "", Gfile)
+    G_out = re.sub(".*/", "", G_out)
+    B_out = re.sub("\.\w+", "", Bfile)
+    B_out = re.sub(".*/", "", B_out)
+    
+    while(True):
+        outExtension = "." + extension
+        outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
         try:
-            flist = os.listdir(inDir)
-        except FileNotFoundError:
-            print("The given file path is not valid or does not exist", file = sys.stderr)
-            exit(1)
-
-        blist = [re.sub("\.\w+$", "",f) for f in flist]
-
-        try:
-            Rband = input("Please provide an 'R' band image file(Ex. B04): ")
-            Rindex = blist.index(Rband)
-            Rfile = inDir + "/" + flist[Rindex]
-            Gband = input("Please provide a 'G' band image file(Ex. B03): ")
-            Gindex = blist.index(Gband)
-            Gfile = inDir + "/" + flist[Gindex]
-            Bband = input("Please provide a 'B' band image file(Ex. B02): ")
-            Bindex = blist.index(Bband)
-            Bfile = inDir + "/" + flist[Bindex]
+            output(outFile, pix_val)
+            break
         except ValueError:
-            print("The band is not available")
-            exit(5)    
-
-        pix_val = merge(Rfile, Gfile, Bfile)
-
-        
-        directories = inDir.split("/")
-        file_path=""
-        for i in directories[:-1]:
-            file_path += i
-            file_path += "/"
-        
-        R_out = re.sub("\.\w+", "", Rfile)
-        R_out = re.sub(".*/", "", R_out)
-        G_out = re.sub("\.\w+", "", Gfile)
-        G_out = re.sub(".*/", "", G_out)
-        B_out = re.sub("\.\w+", "", Bfile)
-        B_out = re.sub(".*/", "", B_out)
-        
-        while(True):
-            outExtension = "." + input("Please provide the output file type(Ex. png, jpg, tiff): ")
-            outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
-            try:
-                rq.output(outFile, pix_val)
-                break
-            except ValueError:
-                print("Not a valid file type")
-
-    else:
-        print("Not a valid flag", file=sys.stderr)
-        exit(4)
-
-
-    exit(0)
-
-
-if __name__ == "__main__":
-    main()
-
+            print("Not a valid file type")
 
