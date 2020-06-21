@@ -3,18 +3,21 @@ import sys
 import re
 import RSreq
 import os
+
 RSreq.install()
 import numpy
 from PIL import Image, ImageFile, ImageDraw
 
+
 def NDVI(NIR, VIS):
-    if(NIR+VIS != 0):
-        val = (NIR - VIS)/(NIR + VIS)
-        if(val<0):
+    if NIR + VIS != 0:
+        val = (NIR - VIS) / (NIR + VIS)
+        if val < 0:
             val = 0
-        return val*256
+        return val * 256
     else:
         return 0
+
 
 def main():
 
@@ -28,24 +31,23 @@ def main():
         extension = ""
         for f in flist:
             if NIR in f:
-                extension = "."+f.split(".")[-1]
+                extension = "." + f.split(".")[-1]
             elif VIS in f:
-                extension = "."+f.split(".")[-1]
-        if(extension == ""):
-            print("The given file path is not valid or does not exist", file = sys.stderr)
+                extension = "." + f.split(".")[-1]
+        if extension == "":
+            print("The given file path is not valid or does not exist", file=sys.stderr)
             exit(1)
 
     except FileNotFoundError:
-        print("The given file path is not valid or does not exist", file = sys.stderr)
+        print("The given file path is not valid or does not exist", file=sys.stderr)
         exit(1)
 
     try:
-        NIR_dict = extract(inDir +"/"+ NIR + extension)
-        VIS_dict = extract(inDir +"/"+ VIS + extension)
+        NIR_dict = extract(inDir + "/" + NIR + extension)
+        VIS_dict = extract(inDir + "/" + VIS + extension)
     except:
-        print("The given file path is not valid or does not exist", file = sys.stderr)
+        print("The given file path is not valid or does not exist", file=sys.stderr)
         exit(1)
-
 
     NIR_list = NIR_dict["R"]
     VIS_list = VIS_dict["G"]
@@ -53,17 +55,19 @@ def main():
     NDVI_list = NIR_list[:]
 
     i = 0
-    while(i<len(NDVI_list)):
+    while i < len(NDVI_list):
         j = 0
-        while(j<len(NDVI_list[i])):
+        while j < len(NDVI_list[i]):
             NDVI_list[i][j] = NDVI(NIR_list[i][j][0], VIS_list[i][j][0])
             j += 1
-        i+=1
+        i += 1
 
-    while(True):
-        outExtension = "." + input("Please provide the output file type(Ex. png, jpg, tiff): ")
-        outputFile = re.sub("$", "_NDVI"+outExtension, inDir)
-        
+    while True:
+        outExtension = "." + input(
+            "Please provide the output file type(Ex. png, jpg, tiff): "
+        )
+        outputFile = re.sub("$", "_NDVI" + outExtension, inDir)
+
         try:
             RSreq.output(outputFile, NDVI_list)
             break

@@ -5,15 +5,16 @@ import re
 import sys
 from rs_tools.RGB import merge
 
+
 def main(args):
     inDir = args.input
     try:
         flist = os.listdir(inDir)
     except FileNotFoundError:
-        print("The given file path is not valid or does not exist", file = sys.stderr)
+        print("The given file path is not valid or does not exist", file=sys.stderr)
         exit(1)
 
-    bands = [re.sub("\.\w+$", "",f) for f in flist]
+    bands = [re.sub("\.\w+$", "", f) for f in flist]
 
     try:
         Rband = args.red
@@ -27,21 +28,32 @@ def main(args):
         Bfile = inDir + "/" + flist[Bindex]
     except ValueError:
         print("The band is not available")
-        exit(5)    
+        exit(5)
 
     merge(args.input, Rfile, Gfile, Bfile, args.extension)
-
-    
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--input', type=str, help='Please provide bands collection path')
-    parser.add_argument('-r', '--red', type=str, help="Please provide an 'R' band image file(Ex. B04)")
-    parser.add_argument('-g', '--green',type=str, help="Please provide an 'G' band image file(Ex. B03)")
-    parser.add_argument('-b', '--blue', type=str, help="Please provide an 'B' band image file(Ex. B02)")
-    parser.add_argument('--extension',type=str ,help='Please provide the output file extension(Ex. png, jpg, tiff)', choices=['png', 'jpg', 'tiff'])
+    parser.add_argument(
+        "--input", type=str, help="Please provide bands collection path"
+    )
+    parser.add_argument(
+        "-r", "--red", type=str, help="Please provide an 'R' band image file(Ex. B04)"
+    )
+    parser.add_argument(
+        "-g", "--green", type=str, help="Please provide an 'G' band image file(Ex. B03)"
+    )
+    parser.add_argument(
+        "-b", "--blue", type=str, help="Please provide an 'B' band image file(Ex. B02)"
+    )
+    parser.add_argument(
+        "--extension",
+        type=str,
+        help="Please provide the output file extension(Ex. png, jpg, tiff)",
+        choices=["png", "jpg", "tiff"],
+    )
 
     args = parser.parse_args()
     main(args)
