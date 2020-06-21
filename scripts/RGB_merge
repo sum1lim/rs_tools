@@ -7,7 +7,6 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--operation', type=str, help='Extract(E) or Merge(M)?')
     parser.add_argument('--input', type=str, help='Please provide bands collection path')
     parser.add_argument('--output',type=str ,help='Please provide the output file extension(Ex. png, jpg, tiff)', choices=['png', 'jpg', 'tiff'])
 
