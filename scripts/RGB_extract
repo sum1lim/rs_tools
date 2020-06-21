@@ -6,38 +6,7 @@ from rs_tools.RGB import extract
 from rs_tools.RSreq import output
 
 def main(args):
-    infile = args.input
-    RGB_dict = extract(infile)
-
-    directories = infile.split("/")[:-1]
-    infile_name = infile.split("/")[-1]
-    dir_path = "/".join(directories)
-    print(dir_path)
-
-    dir_path += "/" + re.sub(".\w+$", "", infile_name) + "(extracted)"
-    print(dir_path)
-    try:
-        os.mkdir(dir_path)
-    except FileExistsError:
-        None
-
-    band_names = infile_name.split("+")
-    while(True):
-        outExtension = "." + args.extension
-
-        R_out = re.sub("$", outExtension, band_names[0]) 
-        G_out = re.sub("$", outExtension, band_names[1])
-        B_out = re.sub("\.\w+", outExtension, band_names[2])
-        
-        try:
-            output(os.path.join(dir_path, R_out), RGB_dict["R"])
-            output(os.path.join(dir_path, G_out), RGB_dict["G"])
-            output(os.path.join(dir_path, B_out), RGB_dict["B"])
-            break
-        except ValueError:
-            print("Not a valid file type")
-
-
+    extract(args.input, args.extension)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

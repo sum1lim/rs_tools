@@ -1,14 +1,14 @@
 import sys
 import re
-import rs_tools.RSreq as rq
-rq.install()
+from rs_tools.RSreq import install, output
+install()
 import numpy
 import os
 from PIL import Image, ImageFile, ImageDraw
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-def extract(inFile):
+def extract(inFile, extension):
     mask = 0
     if(re.search("\w+\.jpeg$", inFile)):
         mask = 255
@@ -47,7 +47,32 @@ def extract(inFile):
     RGB_dict["G"] = G_val
     RGB_dict["B"] = B_val
 
-    return RGB_dict
+    directories = inFile.split("/")[:-1]
+    infile_name = inFile.split("/")[-1]
+    dir_path = "/".join(directories)
+
+    dir_path += "/" + re.sub(".\w+$", "", infile_name) + "(extracted)"
+    try:
+        os.mkdir(dir_path)
+    except FileExistsError:
+        None
+
+    band_names = infile_name.split("+")
+    while(True):
+        outExtension = "." + extension
+
+        R_out = re.sub("$", outExtension, band_names[0]) 
+        G_out = re.sub("$", outExtension, band_names[1])
+        B_out = re.sub("\.\w+", outExtension, band_names[2])
+        
+        try:
+            output(os.path.join(dir_path, R_out), RGB_dict["R"])
+            output(os.path.join(dir_path, G_out), RGB_dict["G"])
+            output(os.path.join(dir_path, B_out), RGB_dict["B"])
+            break
+        except ValueError:
+            print("Not a valid file type")
+
 
 
 
@@ -94,39 +119,7 @@ def main():
     flag = input("Extract(E) or Merge(M)?: ")
 
     if(flag.lower() == "e"):
-
-        inFile = input("Please provide an image file path: ")
-
-        RGB_dict = extract(inFile)
-
-        directories = inFile.split("/")
-        file_path=""
-        for i in directories[:-1]:
-            file_path += i
-            file_path += "/"
-        
-        file_path += re.sub(".\w+$", "", directories[-1]) + "(extracted)/"
-        try:
-            os.mkdir(file_path)
-        except FileExistsError:
-            None
-
-        band_name = directories[-1].split("+")
-        while(True):
-            outExtension = "." + input("Please provide the output file type(Ex. png, jpg, tiff): ")
-    
-            R_out = re.sub("$", outExtension, band_name[0])
-            G_out = re.sub("$", outExtension, band_name[1])
-            B_out = re.sub("\.\w+", outExtension, band_name[2])
-            
-            try:
-                rq.output(file_path + R_out, RGB_dict["R"])
-                rq.output(file_path + G_out, RGB_dict["G"])
-                rq.output(file_path + B_out, RGB_dict["B"])
-                break
-            except ValueError:
-                print("Not a valid file type")
-
+        None
 
     elif(flag.lower() ==  "m"):
 
