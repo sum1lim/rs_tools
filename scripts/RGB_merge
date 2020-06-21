@@ -7,11 +7,8 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
+    parser.add_argument('--operation', type=str, help='Extract(E) or Merge(M)?')
     parser.add_argument('--input', type=str, help='Please provide bands collection path')
-    parser.add_argument('--NIR', type=str, help='Please provide the NIR band image file(Ex. B08)')
-    parser.add_argument('--VIS', type=str, help='Please provide the visible band image file(Ex. B02)')
-    parser.add_argument('--iterations',type=str ,help='Define the number of iterations')    
-    parser.add_argument('--classes',type=str ,help='Define the number of classes from 1 to 7')        
     parser.add_argument('--output',type=str ,help='Please provide the output file extension(Ex. png, jpg, tiff)', choices=['png', 'jpg', 'tiff'])
 
     args = parser.parse_args()
