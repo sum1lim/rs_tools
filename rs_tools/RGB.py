@@ -52,7 +52,7 @@ def extract(inFile):
     return RGB_dict
 
 
-def merge(inDir, Rfile, Gfile, Bfile, extension):
+def merge(inDir, Rfile, Gfile, Bfile):
     try:
         Rimage = Image.open(Rfile, "r")
         Gimage = Image.open(Gfile, "r")
@@ -84,24 +84,4 @@ def merge(inDir, Rfile, Gfile, Bfile, extension):
 
         pix_val.append(tmp_list)
 
-    directories = inDir.split("/")
-    file_path = ""
-    for i in directories[:-1]:
-        file_path += i
-        file_path += "/"
-
-    R_out = re.sub("\.\w+", "", Rfile)
-    R_out = re.sub(".*/", "", R_out)
-    G_out = re.sub("\.\w+", "", Gfile)
-    G_out = re.sub(".*/", "", G_out)
-    B_out = re.sub("\.\w+", "", Bfile)
-    B_out = re.sub(".*/", "", B_out)
-
-    while True:
-        outExtension = "." + extension
-        outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
-        try:
-            output(outFile, pix_val)
-            break
-        except ValueError:
-            print("Not a valid file type")
+    return pix_val

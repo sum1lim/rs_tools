@@ -3,7 +3,9 @@ import argparse
 import os
 import re
 import sys
+
 from rs_tools.RGB import merge
+from rs_tools.RSreq import output
 
 
 def main(args):
@@ -30,7 +32,27 @@ def main(args):
         print("The band is not available")
         exit(5)
 
-    merge(args.input, Rfile, Gfile, Bfile, args.extension)
+    pix_val = merge(args.input, Rfile, Gfile, Bfile)
+
+    directories = inDir.split("/")
+    file_path = ""
+    for i in directories[:-1]:
+        file_path += i
+        file_path += "/"
+
+    R_out = re.sub("\.\w+", "", Rfile)
+    R_out = re.sub(".*/", "", R_out)
+    G_out = re.sub("\.\w+", "", Gfile)
+    G_out = re.sub(".*/", "", G_out)
+    B_out = re.sub("\.\w+", "", Bfile)
+    B_out = re.sub(".*/", "", B_out)
+
+    outExtension = "." + args.extension
+    outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
+    try:
+        output(outFile, pix_val)
+    except ValueError:
+        print("Not a valid file type")
 
 
 if __name__ == "__main__":
