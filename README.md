@@ -15,6 +15,7 @@
     ```
     RGB_merge --input inDir --red red_band --blue blue_band --green green_band --extension {jpg, png, tiff}
     ```
+    <br/>
 * **NDVI**<br/>
     Creates a b/w NDVI image using NIR and VIS bands.<br/>
     <br/>
@@ -22,6 +23,7 @@
     ```
     NDVI --input inDir --NIR NIR_band --VIS VIS_band --extension {jpt, png, tiff}
     ```
+    <br/>
 * **K-Means classification**<br/>
     Classifies land covers using K-Means algorithm.<br/>
     <br/>
