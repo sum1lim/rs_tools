@@ -5,7 +5,7 @@ import sys
 import re
 
 from rs_tools.utils import output
-from rs_tools.K_Means import colors, stats, plot, generate_K_means
+from rs_tools.K_Means import generate_K_means
 
 
 def main(args):
