@@ -1,9 +1,38 @@
 #!/usr/bin/env python3
 import argparse
+import sys
+import os
+import re
+
+from rs_tools.RSreq import output
+from rs_tools.NDVI import create_NDVI
 
 
 def main(args):
-    print(args)
+    try:
+        flist = os.listdir(args.input)
+        extension = ""
+        for f in flist:
+            if args.NIR in f:
+                extension = "." + f.split(".")[-1]
+            elif args.VIS in f:
+                extension = "." + f.split(".")[-1]
+        if extension == "":
+            print("The given file path is not valid or does not exist", file=sys.stderr)
+            exit(1)
+
+    except FileNotFoundError:
+        print("The given file path is not valid or does not exist", file=sys.stderr)
+        exit(1)
+
+    NDVI_list = create_NDVI(args.input, args.NIR, args.VIS, extension)
+
+    outExtension = "." + args.extension
+    outputFile = re.sub("$", "_NDVI" + outExtension, args.input)
+    try:
+        output(outputFile, NDVI_list)
+    except ValueError:
+        print("Not a valid file type")
 
 
 if __name__ == "__main__":
@@ -19,7 +48,7 @@ if __name__ == "__main__":
         "--VIS", type=str, help="Please provide the visible band image file(Ex. B02)"
     )
     parser.add_argument(
-        "--output",
+        "--extension",
         type=str,
         help="Please provide the output file extension(Ex. png, jpg, tiff)",
         choices=["png", "jpg", "tiff"],

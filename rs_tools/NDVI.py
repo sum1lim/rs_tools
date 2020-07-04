@@ -1,10 +1,10 @@
-from RGB import extract, merge
+from rs_tools.RGB import extract, merge
+from rs_tools.RSreq import install
 import sys
 import re
-import RSreq
 import os
 
-RSreq.install()
+install()
 import numpy
 from PIL import Image, ImageFile, ImageDraw
 
@@ -19,29 +19,7 @@ def NDVI(NIR, VIS):
         return 0
 
 
-def main():
-
-    inDir = input("Please provide bands collection path: ")
-
-    NIR = input("Please provide the NIR band image file(Ex. B08): ")
-    VIS = input("Please provide the visible band image file(Ex. B02): ")
-
-    try:
-        flist = os.listdir(inDir)
-        extension = ""
-        for f in flist:
-            if NIR in f:
-                extension = "." + f.split(".")[-1]
-            elif VIS in f:
-                extension = "." + f.split(".")[-1]
-        if extension == "":
-            print("The given file path is not valid or does not exist", file=sys.stderr)
-            exit(1)
-
-    except FileNotFoundError:
-        print("The given file path is not valid or does not exist", file=sys.stderr)
-        exit(1)
-
+def create_NDVI(inDir, NIR, VIS, extension):
     try:
         NIR_dict = extract(inDir + "/" + NIR + extension)
         VIS_dict = extract(inDir + "/" + VIS + extension)
@@ -62,17 +40,7 @@ def main():
             j += 1
         i += 1
 
-    while True:
-        outExtension = "." + input(
-            "Please provide the output file type(Ex. png, jpg, tiff): "
-        )
-        outputFile = re.sub("$", "_NDVI" + outExtension, inDir)
-
-        try:
-            RSreq.output(outputFile, NDVI_list)
-            break
-        except ValueError:
-            print("Not a valid file type")
+    return NDVI_list
 
 
 if __name__ == "__main__":

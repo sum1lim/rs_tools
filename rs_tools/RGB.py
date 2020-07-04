@@ -10,7 +10,7 @@ from PIL import Image, ImageFile, ImageDraw
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-def extract(inFile, extension):
+def extract(inFile):
     mask = 0
     if re.search("\w+\.jpeg$", inFile):
         mask = 255
@@ -49,31 +49,7 @@ def extract(inFile, extension):
     RGB_dict["G"] = G_val
     RGB_dict["B"] = B_val
 
-    directories = inFile.split("/")[:-1]
-    infile_name = inFile.split("/")[-1]
-    dir_path = "/".join(directories)
-
-    dir_path += "/" + re.sub(".\w+$", "", infile_name) + "(extracted)"
-    try:
-        os.mkdir(dir_path)
-    except FileExistsError:
-        None
-
-    band_names = infile_name.split("+")
-    while True:
-        outExtension = "." + extension
-
-        R_out = re.sub("$", outExtension, band_names[0])
-        G_out = re.sub("$", outExtension, band_names[1])
-        B_out = re.sub("\.\w+", outExtension, band_names[2])
-
-        try:
-            output(os.path.join(dir_path, R_out), RGB_dict["R"])
-            output(os.path.join(dir_path, G_out), RGB_dict["G"])
-            output(os.path.join(dir_path, B_out), RGB_dict["B"])
-            break
-        except ValueError:
-            print("Not a valid file type")
+    return RGB_dict
 
 
 def merge(inDir, Rfile, Gfile, Bfile, extension):
