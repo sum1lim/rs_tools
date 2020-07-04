@@ -6,7 +6,7 @@
 ### Packages & scripts <br/>
 * **RGB**<br/>
     Extracts and merges RGB components of an image(s).<br/>
-    <br/>.
+    <br/>
     To run `RGB_extract` script:<br/>
     ```
     RGB_extract --input input_image --extension {jpg, png, tiff}
@@ -17,8 +17,15 @@
     ```
 * **NDVI**<br/>
     Creates a b/w NDVI image using NIR and VIS bands.<br/>
-    <br/>.
+    <br/>
     To run `NDVI` script:<br/>
     ```
     NDVI --input inDir --NIR NIR_band --VIS VIS_band --extension {jpt, png, tiff}
+    ```
+* **K-Means classification**<br/>
+    Classifies land covers using K-Means algorithm.<br/>
+    <br/>
+    To run `K_Means` script:<br/>
+    ```
+    K_Means --input inDir --NIR NIR_band --VIS VIS_band --iterations number_of_iterations --No_classes number_of_classes --extension {jpt, png, tiff}
     ```
