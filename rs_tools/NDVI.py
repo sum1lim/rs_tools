@@ -1,5 +1,5 @@
 from rs_tools.RGB import extract, merge
-from rs_tools.RSreq import install
+from rs_tools.utils import install
 import sys
 import re
 import os

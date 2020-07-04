@@ -1,6 +1,6 @@
 import sys
 import re
-from rs_tools.RSreq import install, output
+from rs_tools.utils import install, output
 
 install()
 import numpy

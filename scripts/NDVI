@@ -4,7 +4,7 @@ import sys
 import os
 import re
 
-from rs_tools.RSreq import output
+from rs_tools.utils import output
 from rs_tools.NDVI import generate_NDVI
 
 

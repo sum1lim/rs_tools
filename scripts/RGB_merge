@@ -5,7 +5,7 @@ import re
 import sys
 
 from rs_tools.RGB import merge
-from rs_tools.RSreq import output
+from rs_tools.utils import output
 
 
 def main(args):

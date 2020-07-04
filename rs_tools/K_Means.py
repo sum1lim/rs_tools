@@ -1,5 +1,5 @@
 from rs_tools.RGB import extract, merge
-from rs_tools.RSreq import euclidean
+from rs_tools.utils import euclidean
 import random
 import re
 import sys

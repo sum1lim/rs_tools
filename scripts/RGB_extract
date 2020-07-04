@@ -3,7 +3,7 @@ import argparse
 import os
 import re
 
-from rs_tools.RSreq import output
+from rs_tools.utils import output
 from rs_tools.RGB import extract
 
 
