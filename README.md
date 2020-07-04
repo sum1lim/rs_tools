@@ -11,7 +11,7 @@
     ```
     RGB_extract --input input_image --extension {jpg, png, tiff}
     ```
-    To run `RGB_merge` script:<br/>
+    **To run `RGB_merge` script:**<br/>
     ```
     RGB_merge --input inDir --red red_band --blue blue_band --green green_band --extension {jpg, png, tiff}
     ```
@@ -21,7 +21,7 @@
     <br/>
     ![Example NDVI output](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test1/input_NDVI.png)
     <br/>
-    To run `NDVI` script:<br/>
+    **To run `NDVI` script:**<br/>
     ```
     NDVI --input inDir --NIR NIR_band --VIS VIS_band --extension {jpt, png, tiff}
     ```
@@ -33,7 +33,7 @@
     <br/>
     ![Example K-Means plot graph](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test2/input_plot.png)
     <br/>
-    To run `K_Means` script:<br/>
+    **To run `K_Means` script:**<br/>
     ```
     K_Means --input inDir --NIR NIR_band --VIS VIS_band --iterations number_of_iterations --No_classes number_of_classes --extension {jpt, png, tiff}
     ```
