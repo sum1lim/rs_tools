@@ -19,7 +19,7 @@ def NDVI(NIR, VIS):
         return 0
 
 
-def create_NDVI(inDir, NIR, VIS, extension):
+def generate_NDVI(inDir, NIR, VIS, extension):
     try:
         NIR_dict = extract(inDir + "/" + NIR + extension)
         VIS_dict = extract(inDir + "/" + VIS + extension)

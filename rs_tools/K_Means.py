@@ -1,12 +1,11 @@
-from RGB import extract, merge
+from rs_tools.RGB import extract, merge
+from rs_tools.RSreq import euclidean
 import random
 import re
 import sys
 import csv
 import os
-import RSreq as RS
 
-RS.install()
 import numpy
 from PIL import Image, ImageFile, ImageDraw
 
@@ -66,9 +65,9 @@ def clustering(firstCoord, secondCoord, K, B):
             v = p[1]
             i = 0
             c = i
-            Min = RS.euclidean(v, B_points[0])
+            Min = euclidean(v, B_points[0])
             while i < B:
-                length = RS.euclidean(B_points[i], v)
+                length = euclidean(B_points[i], v)
                 if length < Min:
                     Min = length
                     c = i
@@ -154,29 +153,7 @@ def stats(pix_location, pix_count, inFile):
     print("\nTotal: " + str(pix_count) + "pixels")
 
 
-def main():
-
-    inDir = input("Please provide bands collection path: ")
-
-    NIR = input("Please provide the NIR band image file(Ex. B08): ")
-    VIS = input("Please provide the visible band image file(Ex. B02): ")
-
-    try:
-        flist = os.listdir(inDir)
-        extension = ""
-        for f in flist:
-            if NIR in f:
-                extension = "." + f.split(".")[-1]
-            elif VIS in f:
-                extension = "." + f.split(".")[-1]
-        if extension == "":
-            print("The given file path is not valid or does not exist", file=sys.stderr)
-            exit(1)
-
-    except FileNotFoundError:
-        print("The given file path is not valid or does not exist", file=sys.stderr)
-        exit(1)
-
+def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
     try:
         print("NIR = " + inDir + "/" + NIR + extension)
         print("VIS = " + inDir + "/" + VIS + extension)
@@ -186,8 +163,8 @@ def main():
         print("The given file path is not valid or does not exist", file=sys.stderr)
         exit(1)
 
-    K = input("Define the number of iterations: ")
-    B = input("Define the number of classes from 1 to " + str(len(colors) - 1) + ": ")
+    K = iterations
+    B = No_classes
     try:
         K = int(K)
         B = int(B)
@@ -212,26 +189,7 @@ def main():
             pix_val[location[0]][location[1]] = colors[c]
         pix_count += len(pix_location[c])
 
-    while True:
-        outExtension = "." + input(
-            "Please provide the output file type(Ex. png, jpg, tiff): "
-        )
-        classifiedFile = re.sub("$", "_KMeans" + outExtension, inDir)
-
-        try:
-            RS.output(classifiedFile, pix_val)
-            break
-        except ValueError:
-            print("Not a valid file type")
-
     plot_val = plot(cart_location)
-
-    plotFile = re.sub("$", "_plot.png", inDir)
-
-    RS.output(plotFile, plot_val)
-
     stats(pix_location, pix_count, inDir)
 
-
-if __name__ == "__main__":
-    main()
+    return pix_val, plot_val

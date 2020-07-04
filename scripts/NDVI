@@ -5,7 +5,7 @@ import os
 import re
 
 from rs_tools.RSreq import output
-from rs_tools.NDVI import create_NDVI
+from rs_tools.NDVI import generate_NDVI
 
 
 def main(args):
@@ -25,7 +25,7 @@ def main(args):
         print("The given file path is not valid or does not exist", file=sys.stderr)
         exit(1)
 
-    NDVI_list = create_NDVI(args.input, args.NIR, args.VIS, extension)
+    NDVI_list = generate_NDVI(args.input, args.NIR, args.VIS, extension)
 
     outExtension = "." + args.extension
     outputFile = re.sub("$", "_NDVI" + outExtension, args.input)

@@ -1,9 +1,50 @@
 #!/usr/bin/env python3
 import argparse
+import os
+import sys
+import re
+
+from rs_tools.RSreq import output
+from rs_tools.K_Means import colors, stats, plot, generate_K_means
 
 
 def main(args):
-    print(args)
+
+    inDir = args.input
+
+    NIR = args.NIR
+    VIS = args.VIS
+
+    try:
+        flist = os.listdir(inDir)
+        extension = ""
+        for f in flist:
+            if NIR in f:
+                extension = "." + f.split(".")[-1]
+            elif VIS in f:
+                extension = "." + f.split(".")[-1]
+        if extension == "":
+            print("The given file path is not valid or does not exist", file=sys.stderr)
+            exit(1)
+
+    except FileNotFoundError:
+        print("The given file path is not valid or does not exist", file=sys.stderr)
+        exit(1)
+
+    pix_val, plot_val = generate_K_means(
+        inDir, NIR, VIS, extension, args.iterations, args.No_classes
+    )
+
+    outExtension = "." + args.extension
+    classifiedFile = re.sub("$", "_KMeans" + outExtension, inDir)
+
+    try:
+        output(classifiedFile, pix_val)
+    except ValueError:
+        print("Not a valid file type")
+
+    plotFile = re.sub("$", "_plot.png", inDir)
+    output(plotFile, plot_val)
 
 
 if __name__ == "__main__":
@@ -22,10 +63,10 @@ if __name__ == "__main__":
         "--iterations", type=str, help="Define the number of iterations"
     )
     parser.add_argument(
-        "--classes", type=str, help="Define the number of classes from 1 to 7"
+        "--No_classes", type=str, help="Define the number of classes from 1 to 7"
     )
     parser.add_argument(
-        "--output",
+        "--extension",
         type=str,
         help="Please provide the output file extension(Ex. png, jpg, tiff)",
         choices=["png", "jpg", "tiff"],
