@@ -9,6 +9,22 @@ from PIL import Image, ImageFile, ImageDraw
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+RGB_indices = {"Red": 0, "Green": 1, "Blue": 2}
+
+
+def extractor(inImage, mask, num_cols, num_rows, RGB_idx):
+    return [
+        [
+            (
+                mask ^ (inImage.getpixel((column, row))[RGB_idx]),
+                mask ^ (inImage.getpixel((column, row))[RGB_idx]),
+                mask ^ (inImage.getpixel((column, row))[RGB_idx]),
+            )
+            for column in range(num_cols)
+        ]
+        for row in range(num_rows)
+    ]
+
 
 def extract(inFile):
     mask = 0
@@ -21,28 +37,11 @@ def extract(inFile):
         exit(1)
 
     size = inImage.size
-    R_val = []
-    G_val = []
-    B_val = []
     num_rows = size[1]
     num_cols = size[0]
-    for row in range(num_rows):
-        R_list = []
-        G_list = []
-        B_list = []
-        for column in range(num_cols):
-            pix = inImage.getpixel((column, row))
-            if type(pix) is int:
-                print("3 bands required", file=sys.stderr)
-                exit(3)
-
-            R_list.append((mask ^ (pix[0]), mask ^ (pix[0]), mask ^ (pix[0])))
-            G_list.append((mask ^ (pix[1]), mask ^ (pix[1]), mask ^ (pix[1])))
-            B_list.append((mask ^ (pix[2]), mask ^ (pix[2]), mask ^ (pix[2])))
-
-        R_val.append(R_list)
-        G_val.append(G_list)
-        B_val.append(B_list)
+    R_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Red"])
+    G_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Green"])
+    B_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Blue"])
 
     RGB_dict = {}
     RGB_dict["R"] = R_val
