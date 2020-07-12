@@ -39,9 +39,12 @@ def extract(inFile):
     size = inImage.size
     num_rows = size[1]
     num_cols = size[0]
-    R_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Red"])
-    G_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Green"])
-    B_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Blue"])
+    try:
+        R_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Red"])
+        G_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Green"])
+        B_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Blue"])
+    except TypeError:
+        print("3 bands required", file=sys.stderr)
 
     RGB_dict = {}
     RGB_dict["R"] = R_val
@@ -70,17 +73,19 @@ def merge(inDir, Rfile, Gfile, Bfile):
         )
         exit(2)
 
-    pix_val = []
     num_rows = Rsize[1]
     num_cols = Rsize[0]
-    for row in range(num_rows):
-        tmp_list = []
-        for column in range(num_cols):
-            Rpix = Rimage.getpixel((column, row))[0]
-            Gpix = Gimage.getpixel((column, row))[1]
-            Bpix = Bimage.getpixel((column, row))[2]
-            tmp_list.append((Rpix, Gpix, Bpix))
 
-        pix_val.append(tmp_list)
+    pix_val = [
+        [
+            (
+                Rimage.getpixel((column, row))[0],
+                Gimage.getpixel((column, row))[1],
+                Bimage.getpixel((column, row))[2],
+            )
+            for column in range(num_cols)
+        ]
+        for row in range(num_rows)
+    ]
 
     return pix_val
