@@ -22,18 +22,18 @@ def main(args):
 
     band_names = infile_name.split("+")
 
-    outExtension = "." + args.extension
-
-    R_out = re.sub("$", outExtension, band_names[0])
-    G_out = re.sub("$", outExtension, band_names[1])
-    B_out = re.sub("\.\w+", outExtension, band_names[2])
-
-    try:
-        output(os.path.join(dir_path, R_out), RGB_dict["R"])
-        output(os.path.join(dir_path, G_out), RGB_dict["G"])
-        output(os.path.join(dir_path, B_out), RGB_dict["B"])
-    except ValueError:
-        print("Not a valid file type")
+    if args.extension:
+        outExtension = "." + args.extension
+        R_out = re.sub("$", outExtension, band_names[0])
+        G_out = re.sub("$", outExtension, band_names[1])
+        B_out = re.sub("\.\w+", outExtension, band_names[2])
+        
+        try:
+            output(os.path.join(dir_path, R_out), RGB_dict["R"])
+            output(os.path.join(dir_path, G_out), RGB_dict["G"])
+            output(os.path.join(dir_path, B_out), RGB_dict["B"])
+        except ValueError:
+            print("Not a valid file type")
 
 
 if __name__ == "__main__":
