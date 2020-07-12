@@ -57,12 +57,13 @@ def main(args):
         if cv2.waitKey(10) == ord("q"):
             break
 
-    outExtension = "." + args.extension
-    outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
-    try:
-        output(outFile, pix_val)
-    except ValueError:
-        print("Not a valid file type")
+    if args.extension:
+        outExtension = "." + args.extension
+        outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
+        try:
+            output(outFile, pix_val)
+        except ValueError:
+            print("Not a valid file type")
 
 
 if __name__ == "__main__":
