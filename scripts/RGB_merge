@@ -3,6 +3,8 @@ import argparse
 import os
 import re
 import sys
+import cv2
+import numpy
 
 from rs_tools.RGB import merge
 from rs_tools.utils import output
@@ -46,6 +48,14 @@ def main(args):
     G_out = re.sub(".*/", "", G_out)
     B_out = re.sub("\.\w+", "", Bfile)
     B_out = re.sub(".*/", "", B_out)
+
+    while True:
+        cv2.imshow(
+            R_out + "+" + G_out + "+" + B_out + "(press q to quit)",
+            numpy.asarray(pix_val, numpy.uint8),
+        )
+        if cv2.waitKey(10) == ord("q"):
+            break
 
     outExtension = "." + args.extension
     outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension

@@ -26,6 +26,13 @@ def install():
     finally:
         from PIL import Image, ImageFile, ImageDraw
 
+    try:
+        import cv2
+    except ImportError:
+        subprocess.call(["pip", "install", "cv2"])
+    finally:
+        import cv2
+
 
 def output(fileName, img_li):
     install()
