@@ -1,4 +1,6 @@
 import subprocess
+import cv2
+import numpy as np
 
 
 def install():
@@ -43,6 +45,15 @@ def output(fileName, img_li):
 
     img = Image.fromarray(array)
     img.save(fileName)
+
+
+def output_to_window(name, array_like):
+    while True:
+        cv2.imshow(
+            name + "(press q to quit)", np.asarray(array_like, np.uint8),
+        )
+        if cv2.waitKey(10) == ord("q"):
+            break
 
 
 def euclidean(p, q):

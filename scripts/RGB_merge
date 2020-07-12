@@ -7,7 +7,7 @@ import cv2
 import numpy
 
 from rs_tools.RGB import merge
-from rs_tools.utils import output
+from rs_tools.utils import output, output_to_window
 
 
 def main(args):
@@ -49,17 +49,12 @@ def main(args):
     B_out = re.sub("\.\w+", "", Bfile)
     B_out = re.sub(".*/", "", B_out)
 
-    while True:
-        cv2.imshow(
-            R_out + "+" + G_out + "+" + B_out + "(press q to quit)",
-            numpy.asarray(pix_val, numpy.uint8),
-        )
-        if cv2.waitKey(10) == ord("q"):
-            break
+    output_name = R_out + "+" + G_out + "+" + B_out
+    output_to_window(output_name, pix_val)
 
     if args.extension:
         outExtension = "." + args.extension
-        outFile = file_path + R_out + "+" + G_out + "+" + B_out + outExtension
+        outFile = file_path + output_name + outExtension
         try:
             output(outFile, pix_val)
         except ValueError:
