@@ -3,31 +3,35 @@ import argparse
 import os
 import re
 
-from rs_tools.utils import output
+from rs_tools.utils import output, output_to_window
 from rs_tools.RGB import extract
 
 
 def main(args):
     RGB_dict = extract(args.input)
 
-    directories = args.input.split("/")[:-1]
     infile_name = args.input.split("/")[-1]
-    dir_path = "/".join(directories)
-
-    dir_path += "/" + re.sub(".\w+$", "", infile_name) + "(extracted)"
-    try:
-        os.mkdir(dir_path)
-    except FileExistsError:
-        None
-
     band_names = infile_name.split("+")
 
+    output_to_window(band_names[0], RGB_dict["R"])
+    output_to_window(band_names[1], RGB_dict["G"])
+    output_to_window(band_names[2], RGB_dict["B"])
+
     if args.extension:
+        directories = args.input.split("/")[:-1]
+        dir_path = "/".join(directories)
+        dir_path += "/" + re.sub(".\w+$", "", infile_name) + "(extracted)"
+
+        try:
+            os.mkdir(dir_path)
+        except FileExistsError:
+            None
+
         outExtension = "." + args.extension
         R_out = re.sub("$", outExtension, band_names[0])
         G_out = re.sub("$", outExtension, band_names[1])
         B_out = re.sub("\.\w+", outExtension, band_names[2])
-        
+
         try:
             output(os.path.join(dir_path, R_out), RGB_dict["R"])
             output(os.path.join(dir_path, G_out), RGB_dict["G"])
