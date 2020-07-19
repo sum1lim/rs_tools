@@ -41,7 +41,3 @@ def generate_NDVI(inDir, NIR, VIS, extension):
         i += 1
 
     return NDVI_list
-
-
-if __name__ == "__main__":
-    main()

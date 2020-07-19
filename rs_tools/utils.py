@@ -58,3 +58,28 @@ def output_to_window(name, array_like):
 
 def euclidean(p, q):
     return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2
+
+
+def pix_val_extractor(inImage, BlackAndWhite=False, RGB_idx=0, mask=0):
+    size = inImage.size
+    num_rows = size[1]
+    num_cols = size[0]
+
+    if BlackAndWhite:
+        return [
+            [mask ^ inImage.getpixel((column, row)) for column in range(num_cols)]
+            for row in range(num_rows)
+        ]
+
+    else:
+        return [
+            [
+                (
+                    mask ^ (inImage.getpixel((column, row))[RGB_idx]),
+                    mask ^ (inImage.getpixel((column, row))[RGB_idx]),
+                    mask ^ (inImage.getpixel((column, row))[RGB_idx]),
+                )
+                for column in range(num_cols)
+            ]
+            for row in range(num_rows)
+        ]

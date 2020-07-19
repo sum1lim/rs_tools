@@ -1,6 +1,6 @@
 import sys
 import re
-from rs_tools.utils import install, output
+from rs_tools.utils import install, output, pix_val_extractor
 
 install()
 import numpy
@@ -10,20 +10,6 @@ from PIL import Image, ImageFile, ImageDraw
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 RGB_indices = {"Red": 0, "Green": 1, "Blue": 2}
-
-
-def extractor(inImage, mask, num_cols, num_rows, RGB_idx):
-    return [
-        [
-            (
-                mask ^ (inImage.getpixel((column, row))[RGB_idx]),
-                mask ^ (inImage.getpixel((column, row))[RGB_idx]),
-                mask ^ (inImage.getpixel((column, row))[RGB_idx]),
-            )
-            for column in range(num_cols)
-        ]
-        for row in range(num_rows)
-    ]
 
 
 def extract(inFile):
@@ -36,15 +22,13 @@ def extract(inFile):
         print("No such file or directory", file=sys.stderr)
         exit(1)
 
-    size = inImage.size
-    num_rows = size[1]
-    num_cols = size[0]
     try:
-        R_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Red"])
-        G_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Green"])
-        B_val = extractor(inImage, mask, num_cols, num_rows, RGB_indices["Blue"])
+        R_val = pix_val_extractor(inImage, RGB_idx=RGB_indices["Red"], mask=mask)
+        G_val = pix_val_extractor(inImage, RGB_idx=RGB_indices["Green"], mask=mask)
+        B_val = pix_val_extractor(inImage, RGB_idx=RGB_indices["Blue"], mask=mask)
     except TypeError:
         print("3 bands required", file=sys.stderr)
+        sys.exit()
 
     RGB_dict = {}
     RGB_dict["R"] = R_val

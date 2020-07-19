@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+import argparse
+import os
+import re
+
+from rs_tools.utils import output, output_to_window
+from rs_tools.SOBEL import generate_SOBEL
+
+
+def main(args):
+    generate_SOBEL(args.input)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--input", type=str, help="Please provide bands collection path"
+    )
+    parser.add_argument(
+        "--extension",
+        type=str,
+        help="Please provide the output file extension(Ex. png, jpg, tiff)",
+        choices=["png", "jpg", "tiff"],
+    )
+
+    args = parser.parse_args()
+    main(args)
