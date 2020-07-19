@@ -3,7 +3,6 @@ from rs_tools.utils import euclidean
 import random
 import re
 import sys
-import csv
 import os
 
 import numpy
@@ -124,35 +123,6 @@ def plot(cart_location):
 
     return plot
 
-
-def stats(pix_location, pix_count, inFile):
-
-    with open(re.sub("$", "_stats.csv", inFile), "w", newline="") as statsFile:
-        writer = csv.writer(statsFile)
-        writer.writerow(["class", "#pixels", "pecentage(%)"])
-        for c in pix_location.keys():
-            writer.writerow(
-                [
-                    colorNames[c],
-                    len(pix_location[c]),
-                    (len(pix_location[c]) / pix_count) * 100,
-                ]
-            )
-        writer.writerow(["total", pix_count, 100])
-
-    print("\nResult:")
-    for c in pix_location.keys():
-        print(
-            colorNames[c]
-            + ": "
-            + str(len(pix_location[c]))
-            + "pixels ("
-            + str((len(pix_location[c]) / pix_count) * 100)
-            + "%)"
-        )
-    print("\nTotal: " + str(pix_count) + "pixels")
-
-
 def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
     try:
         print("NIR = " + inDir + "/" + NIR + extension)
@@ -190,6 +160,5 @@ def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
         pix_count += len(pix_location[c])
 
     plot_val = plot(cart_location)
-    stats(pix_location, pix_count, inDir)
 
-    return pix_val, plot_val
+    return pix_val, plot_val, pix_location, pix_count

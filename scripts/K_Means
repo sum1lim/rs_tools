@@ -3,10 +3,39 @@ import argparse
 import os
 import sys
 import re
+import csv
 
 from rs_tools.utils import output, output_to_window
-from rs_tools.K_Means import generate_K_means
+from rs_tools.K_Means import generate_K_means, colorNames
 
+
+def write_stats(pix_location, pix_count, inDir):
+
+    with open(re.sub("$", "_KMeans_stats.csv", inDir), "w", newline="") as statsFile:
+        writer = csv.writer(statsFile)
+        writer.writerow(["class", "#pixels", "pecentage(%)"])
+        for c in pix_location.keys():
+            writer.writerow(
+                [
+                    colorNames[c],
+                    len(pix_location[c]),
+                    (len(pix_location[c]) / pix_count) * 100,
+                ]
+            )
+        writer.writerow(["total", pix_count, 100])
+
+def print_stats(pix_location, pix_count):
+    print("\nResult:")
+    for c in pix_location.keys():
+        print(
+            colorNames[c]
+            + ": "
+            + str(len(pix_location[c]))
+            + "pixels ("
+            + str((len(pix_location[c]) / pix_count) * 100)
+            + "%)"
+        )
+    print("\nTotal: " + str(pix_count) + "pixels")
 
 def main(args):
 
@@ -31,15 +60,14 @@ def main(args):
         print("The given file path is not valid or does not exist", file=sys.stderr)
         exit(1)
 
-    pix_val, plot_val = generate_K_means(
+    pix_val, plot_val, pix_location, pix_count = generate_K_means(
         inDir, NIR, VIS, extension, args.num_iterations, args.num_classes
     )
 
+    print_stats(pix_location, pix_count)
+
     output_name = args.input.split("/")[-1] + "_KMeans"
     output_to_window(output_name, pix_val)
-
-    plotFile = re.sub("$", "_plot.png", inDir)
-    output(plotFile, plot_val)
 
     plot_output_name = output_name + "_plot"
     output_to_window(plot_output_name, plot_val)
@@ -53,6 +81,10 @@ def main(args):
         except ValueError:
             print("Not a valid file type")
 
+        plotFile = re.sub("$", "_KMeans_plot.png", inDir)
+        output(plotFile, plot_val)
+
+        write_stats(pix_location, pix_count, inDir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
