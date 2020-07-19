@@ -46,7 +46,7 @@ pip install -e .
 * **SOBEL Filter**<br/>
     Detects edges using SOBEL filter.<br/>
     <br/>
-    ![Example SOBEL output](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test1/input_NDVI_SOBEL.png)
+    ![Example SOBEL output](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test2/input_NDVI_SOBEL.png)
     <br/>
     **To run `SOBEL` script:**<br/>
     ```
