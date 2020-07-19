@@ -31,14 +31,24 @@ pip install -e .
     NDVI --input inDir --NIR NIR_band --VIS VIS_band --extension {jpt, png, tiff}
     ```
     <br/>
-* **K-Means classification**<br/>
+* **K-Means Classification**<br/>
     Classifies land covers using K-Means algorithm.<br/>
     <br/>
     ![Example K-Means output](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test2/input_KMeans.png)
     <br/>
-    ![Example K-Means plot graph](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test2/input_plot.png)
+    ![Example K-Means plot graph](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test2/input_KMeans_plot.png)
     <br/>
     **To run `K_Means` script:**<br/>
     ```
     K_Means --input inDir --NIR NIR_band --VIS VIS_band --iterations number_of_iterations --No_classes number_of_classes --extension {jpt, png, tiff}
+    ```
+    <br/>
+* **SOBEL Filter**<br/>
+    Detects edges using SOBEL filter.<br/>
+    <br/>
+    ![Example SOBEL output](https://github.com/sum1lim/Remote_Sensing/blob/master/tests/test1/input_NDVI_SOBEL.png)
+    <br/>
+    **To run `SOBEL` script:**<br/>
+    ```
+    SOBEL --input inFile
     ```
