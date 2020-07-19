@@ -15,7 +15,7 @@ def generate_SOBEL(inFile):
         print("No such file or directory", file=sys.stderr)
         exit(1)
 
-    image = pix_val_list(inImage, RGB=True)
+    image = pix_val_list(inImage, RGB=False)
     SOBEL_horizontal = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
     SOBEL_vertical = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
 
