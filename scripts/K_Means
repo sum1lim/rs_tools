@@ -4,7 +4,7 @@ import os
 import sys
 import re
 
-from rs_tools.utils import output
+from rs_tools.utils import output, output_to_window
 from rs_tools.K_Means import generate_K_means
 
 
@@ -35,17 +35,23 @@ def main(args):
         inDir, NIR, VIS, extension, args.iterations, args.No_classes
     )
 
-    outExtension = "." + args.extension
-    classifiedFile = re.sub("$", "_KMeans" + outExtension, inDir)
-
-    try:
-        output(classifiedFile, pix_val)
-    except ValueError:
-        print("Not a valid file type")
+    output_name = args.input.split("/")[-1] + "_KMeans"
+    output_to_window(output_name, pix_val)
 
     plotFile = re.sub("$", "_plot.png", inDir)
     output(plotFile, plot_val)
 
+    plot_output_name =  output_name + "_plot"
+    output_to_window(plot_output_name, plot_val)
+
+    if args.extension:
+        outExtension = "." + args.extension
+        classifiedFile = re.sub("$", "_KMeans" + outExtension, inDir)
+
+        try:
+            output(classifiedFile, pix_val)
+        except ValueError:
+            print("Not a valid file type")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
