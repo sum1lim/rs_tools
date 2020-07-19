@@ -36,7 +36,7 @@ def generate_NDVI(inDir, NIR, VIS, extension):
     while i < len(NDVI_list):
         j = 0
         while j < len(NDVI_list[i]):
-            NDVI_list[i][j] = NDVI(NIR_list[i][j][0], VIS_list[i][j][0])
+            NDVI_list[i][j] = NDVI(NIR_list[i][j], VIS_list[i][j])
             j += 1
         i += 1
 

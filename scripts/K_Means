@@ -32,7 +32,7 @@ def main(args):
         exit(1)
 
     pix_val, plot_val = generate_K_means(
-        inDir, NIR, VIS, extension, args.iterations, args.No_classes
+        inDir, NIR, VIS, extension, args.num_iterations, args.num_classes
     )
 
     output_name = args.input.split("/")[-1] + "_KMeans"
@@ -41,7 +41,7 @@ def main(args):
     plotFile = re.sub("$", "_plot.png", inDir)
     output(plotFile, plot_val)
 
-    plot_output_name =  output_name + "_plot"
+    plot_output_name = output_name + "_plot"
     output_to_window(plot_output_name, plot_val)
 
     if args.extension:
@@ -52,6 +52,7 @@ def main(args):
             output(classifiedFile, pix_val)
         except ValueError:
             print("Not a valid file type")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -66,10 +67,10 @@ if __name__ == "__main__":
         "--VIS", type=str, help="Please provide the visible band image file(Ex. B02)"
     )
     parser.add_argument(
-        "--iterations", type=str, help="Define the number of iterations"
+        "--num_iterations", type=str, help="Define the number of iterations"
     )
     parser.add_argument(
-        "--No_classes", type=str, help="Define the number of classes from 1 to 7"
+        "--num_classes", type=str, help="Define the number of classes from 1 to 7"
     )
     parser.add_argument(
         "--extension",

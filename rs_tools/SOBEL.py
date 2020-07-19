@@ -17,4 +17,6 @@ def generate_SOBEL(inFile):
 
     pix_val_li = pix_val_extractor(inImage, BlackAndWhite=True)
 
-    print(pix_val_li)
+    SOBEL_horizontal = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
+
+    SOBEL_vertical = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]

@@ -74,12 +74,13 @@ def pix_val_extractor(inImage, BlackAndWhite=False, RGB_idx=0, mask=0):
     else:
         return [
             [
-                (
-                    mask ^ (inImage.getpixel((column, row))[RGB_idx]),
-                    mask ^ (inImage.getpixel((column, row))[RGB_idx]),
-                    mask ^ (inImage.getpixel((column, row))[RGB_idx]),
-                )
+                mask ^ (inImage.getpixel((column, row))[RGB_idx])
                 for column in range(num_cols)
             ]
             for row in range(num_rows)
         ]
+
+
+def convolution(image, filter):
+    size
+    None

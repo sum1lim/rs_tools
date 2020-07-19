@@ -44,7 +44,7 @@ def clustering(firstCoord, secondCoord, K, B):
     while i < len(firstCoord):
         j = 0
         while j < len(firstCoord[i]):
-            plots.append(((i, j), (firstCoord[i][j][0], secondCoord[i][j][0])))
+            plots.append(((i, j), (firstCoord[i][j], secondCoord[i][j])))
             j += 1
         i += 1
 
