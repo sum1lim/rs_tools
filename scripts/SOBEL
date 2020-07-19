@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import os
-import re
 
 from rs_tools.utils import output, output_to_window
 from rs_tools.SOBEL import generate_SOBEL
@@ -12,6 +10,16 @@ def main(args):
 
     output_name = args.input.split("/")[-1].split(".")[0] + "_SOBEL"
     output_to_window(output_name, SOBEL_Gaussian)
+
+    if args.extension:
+        outExtension = "." + args.extension
+        outputFile = ".".join(args.input.split(".")[:-1]) + "_SOBEL" + outExtension
+
+        try:
+            output(outputFile, SOBEL_Gaussian)
+        except ValueError:
+            print("Not a valid file type")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
