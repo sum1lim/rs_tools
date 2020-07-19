@@ -4,7 +4,7 @@ import sys
 import os
 import re
 
-from rs_tools.utils import output
+from rs_tools.utils import output, output_to_window
 from rs_tools.NDVI import generate_NDVI
 
 
@@ -27,12 +27,16 @@ def main(args):
 
     NDVI_list = generate_NDVI(args.input, args.NIR, args.VIS, extension)
 
-    outExtension = "." + args.extension
-    outputFile = re.sub("$", "_NDVI" + outExtension, args.input)
-    try:
-        output(outputFile, NDVI_list)
-    except ValueError:
-        print("Not a valid file type")
+    output_name = args.input.split("/")[-1] + "_NDVI"
+    output_to_window(output_name, NDVI_list)
+
+    if args.extension:
+        outExtension = "." + args.extension
+        outputFile = re.sub("$", "_NDVI" + outExtension, args.input)
+        try:
+            output(outputFile, NDVI_list)
+        except ValueError:
+            print("Not a valid file type")
 
 
 if __name__ == "__main__":
