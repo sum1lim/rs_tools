@@ -22,13 +22,9 @@ def extract(inFile):
         print("No such file or directory", file=sys.stderr)
         exit(1)
 
-    try:
-        R_val = pix_val_list(inImage, RGB_idx=RGB_indices["Red"], mask=mask)
-        G_val = pix_val_list(inImage, RGB_idx=RGB_indices["Green"], mask=mask)
-        B_val = pix_val_list(inImage, RGB_idx=RGB_indices["Blue"], mask=mask)
-    except TypeError:
-        print("3 bands required", file=sys.stderr)
-        sys.exit()
+    R_val = pix_val_list(inImage, RGB_idx=RGB_indices["Red"], mask=mask)
+    G_val = pix_val_list(inImage, RGB_idx=RGB_indices["Green"], mask=mask)
+    B_val = pix_val_list(inImage, RGB_idx=RGB_indices["Blue"], mask=mask)
 
     RGB_dict = {}
     RGB_dict["R"] = R_val

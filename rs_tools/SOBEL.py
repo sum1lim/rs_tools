@@ -15,7 +15,7 @@ def generate_SOBEL(inFile):
         print("No such file or directory", file=sys.stderr)
         exit(1)
 
-    image = pix_val_list(inImage, BlackAndWhite=True)
+    image = pix_val_list(inImage, RGB=True)
     SOBEL_horizontal = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
     SOBEL_vertical = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
 
@@ -25,7 +25,7 @@ def generate_SOBEL(inFile):
     output_name = "horizontal"
     output_to_window(output_name, horizontal_Gaussian)
     output_name = "vertical"
-    output_to_window(output_name, vertical_Gaussian)    
+    output_to_window(output_name, vertical_Gaussian)
 
     num_rows = len(image)
     num_cols = len(image[0])
@@ -33,6 +33,8 @@ def generate_SOBEL(inFile):
 
     for row in range(num_rows):
         for col in range(num_cols):
-            SOBEL_Gaussian[row][col] = (horizontal_Gaussian[row][col] + vertical_Gaussian[row][col]) / 2
+            SOBEL_Gaussian[row][col] = (
+                horizontal_Gaussian[row][col] + vertical_Gaussian[row][col]
+            ) / 2
 
     return SOBEL_Gaussian

@@ -1,6 +1,7 @@
 import subprocess
 import cv2
 import numpy as np
+import sys
 
 
 def install():
@@ -60,25 +61,38 @@ def euclidean(p, q):
     return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2
 
 
-def pix_val_list(inImage, BlackAndWhite=False, RGB_idx=0, mask=0):
+def pix_val_list(inImage, RGB=True, RGB_idx=0, mask=0):
     size = inImage.size
     num_rows = size[1]
     num_cols = size[0]
 
-    if BlackAndWhite:
-        return [
-            [mask ^ inImage.getpixel((column, row)) for column in range(num_cols)]
-            for row in range(num_rows)
-        ]
+    if RGB:
+        try:
+            return [
+                [
+                    mask ^ (inImage.getpixel((column, row))[RGB_idx])
+                    for column in range(num_cols)
+                ]
+                for row in range(num_rows)
+            ]
+        except TypeError:
+            print("3 bands required", file=sys.stderr)
+            sys.exit()
 
     else:
-        return [
-            [
-                mask ^ (inImage.getpixel((column, row))[RGB_idx])
-                for column in range(num_cols)
+        try:
+            return [
+                [mask ^ inImage.getpixel((column, row)) for column in range(num_cols)]
+                for row in range(num_rows)
             ]
-            for row in range(num_rows)
-        ]
+        except TypeError:
+            return [
+                [
+                    mask ^ inImage.getpixel((column, row))
+                    for column in range(num_cols)[0]
+                ]
+                for row in range(num_rows)
+            ]
 
 
 def convolution(image, filter):
@@ -89,37 +103,37 @@ def convolution(image, filter):
 
     for row in range(num_rows):
         for col in range(num_cols):
-            upper_row = row-1
-            lower_row = row+1
-            left_col = col-1
-            right_col = col+1
+            upper_row = row - 1
+            lower_row = row + 1
+            left_col = col - 1
+            right_col = col + 1
 
             if upper_row < 0:
-                upper_row = num_rows-1
+                upper_row = num_rows - 1
             if left_col < 0:
-                left_col = num_cols-1
+                left_col = num_cols - 1
             if lower_row >= num_rows:
                 lower_row = 0
             if right_col >= num_cols:
                 right_col = 0
 
             convolved_value = (
-                filter[0][0] * image[lower_row][right_col] +
-                filter[0][1] * image[lower_row][col] +
-                filter[0][2] * image[lower_row][left_col] +
-                filter[1][0] * image[row][right_col] +
-                filter[1][1] * image[row][col] +
-                filter[1][2] * image[row][left_col] +
-                filter[2][0] * image[upper_row][right_col] +
-                filter[2][1] * image[upper_row][col] +
-                filter[2][2] * image[upper_row][left_col]
-            ) / 8
+                filter[0][0] * image[lower_row][right_col]
+                + filter[0][1] * image[lower_row][col]
+                + filter[0][2] * image[lower_row][left_col]
+                + filter[1][0] * image[row][right_col]
+                + filter[1][1] * image[row][col]
+                + filter[1][2] * image[row][left_col]
+                + filter[2][0] * image[upper_row][right_col]
+                + filter[2][1] * image[upper_row][col]
+                + filter[2][2] * image[upper_row][left_col]
+            ) / 3
 
             if convolved_value < 0:
                 convolved_value = 0
             elif convolved_value > 255:
                 convolved_value = 255
-                
+
             result[row][col] = convolved_value
 
     return result
