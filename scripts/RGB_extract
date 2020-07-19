@@ -20,7 +20,7 @@ def main(args):
     if args.extension:
         directories = args.input.split("/")[:-1]
         dir_path = "/".join(directories)
-        dir_path += "/" + re.sub(".\w+$", "", infile_name) + "(extracted)"
+        dir_path += "/" + re.sub(".\w+$", "", infile_name)
 
         try:
             os.mkdir(dir_path)
