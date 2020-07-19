@@ -1,6 +1,6 @@
 import sys
 import re
-from rs_tools.utils import install, output, pix_val_extractor
+from rs_tools.utils import install, output, pix_val_list
 
 install()
 import numpy
@@ -23,9 +23,9 @@ def extract(inFile):
         exit(1)
 
     try:
-        R_val = pix_val_extractor(inImage, RGB_idx=RGB_indices["Red"], mask=mask)
-        G_val = pix_val_extractor(inImage, RGB_idx=RGB_indices["Green"], mask=mask)
-        B_val = pix_val_extractor(inImage, RGB_idx=RGB_indices["Blue"], mask=mask)
+        R_val = pix_val_list(inImage, RGB_idx=RGB_indices["Red"], mask=mask)
+        G_val = pix_val_list(inImage, RGB_idx=RGB_indices["Green"], mask=mask)
+        B_val = pix_val_list(inImage, RGB_idx=RGB_indices["Blue"], mask=mask)
     except TypeError:
         print("3 bands required", file=sys.stderr)
         sys.exit()

@@ -8,8 +8,10 @@ from rs_tools.SOBEL import generate_SOBEL
 
 
 def main(args):
-    generate_SOBEL(args.input)
+    SOBEL_Gaussian = generate_SOBEL(args.input)
 
+    output_name = args.input.split("/")[-1].split(".")[0] + "_SOBEL"
+    output_to_window(output_name, SOBEL_Gaussian)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

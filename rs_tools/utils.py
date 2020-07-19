@@ -60,7 +60,7 @@ def euclidean(p, q):
     return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2
 
 
-def pix_val_extractor(inImage, BlackAndWhite=False, RGB_idx=0, mask=0):
+def pix_val_list(inImage, BlackAndWhite=False, RGB_idx=0, mask=0):
     size = inImage.size
     num_rows = size[1]
     num_cols = size[0]
@@ -82,5 +82,37 @@ def pix_val_extractor(inImage, BlackAndWhite=False, RGB_idx=0, mask=0):
 
 
 def convolution(image, filter):
-    size
-    None
+    num_rows = len(image)
+    num_cols = len(image[0])
+
+    result = image[:]
+
+    for row in range(num_rows):
+        for col in range(num_cols):
+            upper_row = row-1
+            lower_row = row+1
+            left_col = col-1
+            right_col = col+1
+
+            if upper_row < 0:
+                upper_row = num_rows-1
+            if left_col < 0:
+                left_col = num_cols-1
+            if lower_row >= num_rows:
+                lower_row = 0
+            if right_col >= num_cols:
+                right_col = 0
+
+            result[row][col] = (
+                filter[0][0] * image[lower_row][right_col] +
+                filter[0][1] * image[lower_row][col] +
+                filter[0][2] * image[lower_row][left_col] +
+                filter[1][0] * image[row][right_col] +
+                filter[1][1] * image[row][col] +
+                filter[1][2] * image[row][left_col] +
+                filter[2][0] * image[upper_row][right_col] +
+                filter[2][1] * image[upper_row][col] +
+                filter[2][2] * image[upper_row][left_col]
+            ) // 8
+
+    return result
