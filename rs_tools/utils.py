@@ -103,7 +103,7 @@ def convolution(image, filter):
             if right_col >= num_cols:
                 right_col = 0
 
-            result[row][col] = (
+            convolved_value = (
                 filter[0][0] * image[lower_row][right_col] +
                 filter[0][1] * image[lower_row][col] +
                 filter[0][2] * image[lower_row][left_col] +
@@ -113,6 +113,13 @@ def convolution(image, filter):
                 filter[2][0] * image[upper_row][right_col] +
                 filter[2][1] * image[upper_row][col] +
                 filter[2][2] * image[upper_row][left_col]
-            ) // 8
+            ) / 8
+
+            if convolved_value < 0:
+                convolved_value = 0
+            elif convolved_value > 255:
+                convolved_value = 255
+                
+            result[row][col] = convolved_value
 
     return result

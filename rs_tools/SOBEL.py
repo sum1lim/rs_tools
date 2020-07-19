@@ -33,6 +33,6 @@ def generate_SOBEL(inFile):
 
     for row in range(num_rows):
         for col in range(num_cols):
-            SOBEL_Gaussian[row][col] = (horizontal_Gaussian[row][col] + vertical_Gaussian[row][col]) // 2
+            SOBEL_Gaussian[row][col] = (horizontal_Gaussian[row][col] + vertical_Gaussian[row][col]) / 2
 
     return SOBEL_Gaussian
