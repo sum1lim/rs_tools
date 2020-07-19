@@ -40,7 +40,7 @@ pip install -e .
     <br/>
     **To run `K_Means` script:**<br/>
     ```
-    K_Means --input inDir --NIR NIR_band --VIS VIS_band --num_iterations number_of_iterations --num_classes number_of_classes --extension {jpt, png, tiff}
+    K_Means --input inDir --NIR NIR_band --VIS VIS_band --num_iterations #iterations --num_classes #classes --extension {jpt, png, tiff}
     ```
     <br/>
 * **SOBEL Filter**<br/>
