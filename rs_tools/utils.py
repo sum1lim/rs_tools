@@ -32,7 +32,7 @@ def install():
     try:
         import cv2
     except ImportError:
-        subprocess.call(["pip", "install", "cv2"])
+        subprocess.call(["pip", "install", "opencv-python"])
     finally:
         import cv2
 
