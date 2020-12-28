@@ -1,48 +1,13 @@
-import subprocess
 import cv2
-import numpy as np
 import sys
-
-
-def install():
-
-    try:
-        import pip
-    except ImportError:
-        subprocess.call(
-            [sys.executable, "-m", "pip", "install", "--user", "upgrade", "pip==9.0.3"]
-        )
-
-        import pip
-
-    try:
-        import numpy
-    except ImportError:
-        subprocess.call(["pip", "install", "numpy"])
-    finally:
-        import numpy
-
-    try:
-        from PIL import Image, ImageFile, ImageDraw
-    except ImportError:
-        subprocess.call(["pip", "install", "Pillow"])
-    finally:
-        from PIL import Image, ImageFile, ImageDraw
-
-    try:
-        import cv2
-    except ImportError:
-        subprocess.call(["pip", "install", "opencv-python"])
-    finally:
-        import cv2
+import numpy as np
+from PIL import Image, ImageFile, ImageDraw
+from mg_detr.install import install
 
 
 def output(fileName, img_li):
     install()
-    import numpy
-    from PIL import Image, ImageFile, ImageDraw
-
-    array = numpy.array(img_li, dtype=numpy.uint8)
+    array = np.array(img_li, dtype=np.uint8)
 
     img = Image.fromarray(array)
     img.save(fileName)
@@ -51,7 +16,8 @@ def output(fileName, img_li):
 def output_to_window(name, array_like):
     while True:
         cv2.imshow(
-            name + "(press q to quit)", np.asarray(array_like, np.uint8),
+            name + "(press q to quit)",
+            np.asarray(array_like, np.uint8),
         )
         if cv2.waitKey(10) == ord("q"):
             break
