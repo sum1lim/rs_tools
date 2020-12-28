@@ -30,7 +30,7 @@ def generate_SOBEL(inFile):
         for col in range(num_cols):
             SOBEL_Gaussian[row][col] = (
                 horizontal_Gaussian_left[row][col]
-                + horizontal_Gaussian_left[row][col]
+                + horizontal_Gaussian_right[row][col]
                 + vertical_Gaussian_bottom[row][col]
                 + vertical_Gaussian_top[row][col]
             )
