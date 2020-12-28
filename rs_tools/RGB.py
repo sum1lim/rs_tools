@@ -1,8 +1,6 @@
 import sys
 import re
-from rs_tools.utils import install, output, pix_val_list
-
-install()
+from rs_tools.utils import output, pix_val_list
 import numpy
 import os
 from PIL import Image, ImageFile, ImageDraw

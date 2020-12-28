@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+from rs_tools.install import install
+install()
+
 import argparse
 import sys
 import os

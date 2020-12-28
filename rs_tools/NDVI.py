@@ -1,10 +1,7 @@
 from rs_tools.RGB import extract, merge
-from rs_tools.utils import install
 import sys
 import re
 import os
-
-install()
 import numpy
 from PIL import Image, ImageFile, ImageDraw
 

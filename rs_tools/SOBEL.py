@@ -1,7 +1,4 @@
-from rs_tools.utils import install, pix_val_list, convolution, output_to_window
-
-install()
-
+from rs_tools.utils import pix_val_list, convolution, output_to_window
 import numpy
 import sys
 from PIL import Image, ImageFile, ImageDraw
