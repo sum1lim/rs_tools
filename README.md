@@ -4,7 +4,9 @@
 <br/><br/>
 **To install packages:**
 ```
-pip install -e .
+python -m venv venv
+source venv/bin/activate
+pip install .
 ```
 <br/>
 
