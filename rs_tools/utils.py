@@ -2,7 +2,7 @@ import cv2
 import sys
 import numpy as np
 from PIL import Image, ImageFile, ImageDraw
-from mg_detr.install import install
+from rs_tools.install import install
 
 
 def output(fileName, img_li):
