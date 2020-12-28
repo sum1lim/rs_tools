@@ -52,5 +52,5 @@ pip install .
     <br/>
     **To run `SOBEL` script:**<br/>
     ```
-    SOBEL --input inFile
+    SOBEL --input inFile --extension {jpt, png, tiff}
     ```
