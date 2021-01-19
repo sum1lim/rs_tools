@@ -2,6 +2,15 @@ import subprocess
 import sys
 
 
+def pip_install(pkg):
+    try:
+        exec(f"import {pkg}")
+    except ImportError:
+        subprocess.call(["pip", "install", "numpy"])
+    finally:
+        exec(f"import {pkg}")
+
+
 def install():
 
     try:
@@ -10,26 +19,9 @@ def install():
         subprocess.call(
             [sys.executable, "-m", "pip", "install", "--user", "upgrade", "pip==9.0.3"]
         )
-
+    finally:
         import pip
 
-    try:
-        import numpy
-    except ImportError:
-        subprocess.call(["pip", "install", "numpy"])
-    finally:
-        import numpy
-
-    try:
-        from PIL import Image, ImageFile, ImageDraw
-    except ImportError:
-        subprocess.call(["pip", "install", "Pillow"])
-    finally:
-        from PIL import Image, ImageFile, ImageDraw
-
-    try:
-        import cv2
-    except ImportError:
-        subprocess.call(["pip", "install", "opencv-python"])
-    finally:
-        import cv2
+    pip_install("numpy")
+    pip_install("PIL")
+    pip_install("cv2")

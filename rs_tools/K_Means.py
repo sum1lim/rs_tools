@@ -123,6 +123,7 @@ def plot(cart_location):
 
     return plot
 
+
 def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
     try:
         print("NIR = " + inDir + "/" + NIR + extension)
