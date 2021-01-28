@@ -2,13 +2,13 @@ import subprocess
 import sys
 
 
-def pip_install(pkg):
+def pip_install(import_name, pkg):
     try:
-        exec(f"import {pkg}")
+        exec(f"import {import_name}")
     except ImportError:
-        subprocess.call(["pip", "install", "numpy"])
+        subprocess.call(["pip", "install", pkg])
     finally:
-        exec(f"import {pkg}")
+        exec(f"import {import_name}")
 
 
 def install():
@@ -22,6 +22,6 @@ def install():
     finally:
         import pip
 
-    pip_install("numpy")
-    pip_install("PIL")
-    pip_install("cv2")
+    pip_install("numpy", "numpy")
+    pip_install("pillow", "PIL")
+    pip_install("opencv-python", "cv2")
