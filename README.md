@@ -20,7 +20,7 @@ pip install .
     ```
     **To run `RGB_merge` script:**<br/>
     ```
-    RGB_merge --input [in directory path] --red [red band] --blue [blue band] --green [green band] --extension {jpg, png, tiff}
+    RGB_merge --input [input directory path] --red [red band] --blue [blue band] --green [green band] --extension {jpg, png, tiff}
     ```
     <br/>
 * **NDVI**<br/>
