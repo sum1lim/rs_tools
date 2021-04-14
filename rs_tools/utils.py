@@ -13,13 +13,13 @@ def output(fileName, img_li):
     img.save(fileName)
 
 
-def output_to_window(name, array_like):
+def output_to_window(name, inImage):
 
-    scale = 800 / array_like.size[0]
-    height = int(array_like.size[1] * scale)
-    width = int(array_like.size[0] * scale)
+    scale = 800 / inImage.size[0]
+    height = int(inImage.size[1] * scale)
+    width = int(inImage.size[0] * scale)
     dsize = (width, height)
-    output = cv2.resize(np.flip(np.array(array_like, np.uint8), 1), dsize)
+    output = cv2.resize(np.flip(np.array(inImage, np.uint8), 1), dsize)
 
     while True:
         cv2.imshow(
@@ -28,12 +28,8 @@ def output_to_window(name, array_like):
         )
 
         keyboard_input = cv2.waitKey(0)
-
-        if cv2.waitKey(10) == ord("q"):
-            break
-
+        
         if keyboard_input == ord("q"):
-            break
             return
         elif keyboard_input == ord("c"):
             output = cv2.resize(np.flip(np.array(inImage, np.uint8), 1), dsize)
