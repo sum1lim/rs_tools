@@ -14,13 +14,41 @@ def output(fileName, img_li):
 
 
 def output_to_window(name, array_like):
+
+    scale = 800 / array_like.size[0]
+    height = int(array_like.size[1] * scale)
+    width = int(array_like.size[0] * scale)
+    dsize = (width, height)
+    output = cv2.resize(np.flip(np.array(array_like, np.uint8), 1), dsize)
+
     while True:
         cv2.imshow(
-            name + "(press q to quit)",
-            np.asarray(array_like, np.uint8),
+            name + "(press q to quit / press c to clip)",
+            output,
         )
+
+        keyboard_input = cv2.waitKey(0)
+
         if cv2.waitKey(10) == ord("q"):
             break
+
+        if keyboard_input == ord("q"):
+            break
+            return
+        elif keyboard_input == ord("c"):
+            output = cv2.resize(np.flip(np.array(inImage, np.uint8), 1), dsize)
+            left = int(int(input("left coordinate: ")) * scale)
+            top = int(int(input("top coordinate: ")) * scale)
+            right = int(int(input("right coordinate: ")) * scale)
+            bottom = int(int(input("bottom coordinate: ")) * scale)
+
+            start_point = (left, top)
+            end_point = (right, bottom)
+
+            color = (255, 255, 255)
+
+            thickness = 2
+            output = cv2.rectangle(output, start_point, end_point, color, thickness)
 
 
 def euclidean(p, q):
