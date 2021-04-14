@@ -16,11 +16,11 @@ pip install .
     <br/>
     To run `RGB_extract` script:<br/>
     ```
-    RGB_extract --input input_image --extension {jpg, png, tiff}
+    RGB_extract --input [input image path] --extension {jpg, png, tiff}
     ```
     **To run `RGB_merge` script:**<br/>
     ```
-    RGB_merge --input inDir --red red_band --blue blue_band --green green_band --extension {jpg, png, tiff}
+    RGB_merge --input [input directory path] --red [red band] --blue [blue band] --green [green band] --extension {jpg, png, tiff}
     ```
     <br/>
 * **NDVI**<br/>
@@ -30,7 +30,7 @@ pip install .
     <br/>
     **To run `NDVI` script:**<br/>
     ```
-    NDVI --input inDir --NIR NIR_band --VIS VIS_band --extension {jpt, png, tiff}
+    NDVI --input [input directory path] --NIR [NIR band] --VIS [VIS band] --extension {jpg, png, tiff}
     ```
     <br/>
 * **K-Means Classification**<br/>
@@ -42,7 +42,7 @@ pip install .
     <br/>
     **To run `K_Means` script:**<br/>
     ```
-    K_Means --input inDir --NIR NIR_band --VIS VIS_band --num_iterations #iterations --num_classes #classes --extension {jpt, png, tiff}
+    K_Means --input [input directory path] --NIR [NIR band] --VIS [VIS band] --num_iterations [# iterations] --num_classes [# classes] --extension {jpt, png, tiff}
     ```
     <br/>
 * **SOBEL Filter**<br/>
@@ -52,5 +52,5 @@ pip install .
     <br/>
     **To run `SOBEL` script:**<br/>
     ```
-    SOBEL --input inFile --extension {jpt, png, tiff}
+    SOBEL --input [input image path] --extension {jpt, png, tiff}
     ```
