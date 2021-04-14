@@ -23,5 +23,5 @@ def install():
         import pip
 
     pip_install("numpy", "numpy")
-    pip_install("pillow", "PIL")
-    pip_install("opencv-python", "cv2")
+    pip_install("PIL", "pillow")
+    pip_install("cv2", "opencv-python")
