@@ -13,29 +13,42 @@ def output(fileName, img_li):
     img.save(fileName)
 
 
-def output_to_window(name, inImage):
+def output_to_window(name, image):
+    image = np.flip(np.array(image, np.uint8), 1)
 
-    scale = 800 / inImage.size[0]
-    height = int(inImage.size[1] * scale)
-    width = int(inImage.size[0] * scale)
-    dsize = (width, height)
-    output = cv2.resize(np.flip(np.array(inImage, np.uint8), 1), dsize)
+    print(f"Height: {str(len(image))}")
+    print(f"Width: {str(len(image[0]))}")
+
+    original_height = len(image)
+    original_width = len(image[0])
+
+    scale = 800 / original_height
+    new_height = int(original_height * scale)
+    new_width = int(original_width * scale)
+    dsize = (new_width, new_height)
+    output = cv2.resize(image, dsize)
+
+    left = 0
+    right = original_width - 1
+    top = 0
+    bottom = original_height - 1
 
     while True:
         cv2.imshow(
-            name + "(press q to quit / press c to clip)",
+            name + "(press c to clip / press q to quit)",
             output,
         )
 
         keyboard_input = cv2.waitKey(0)
-        
+
         if keyboard_input == ord("q"):
-            return
+            return image[top:bottom, left:right]
+            
         elif keyboard_input == ord("c"):
-            output = cv2.resize(np.flip(np.array(inImage, np.uint8), 1), dsize)
+            output = cv2.resize(np.flip(np.array(image, np.uint8), 1), dsize)
             left = int(int(input("left coordinate: ")) * scale)
-            top = int(int(input("top coordinate: ")) * scale)
             right = int(int(input("right coordinate: ")) * scale)
+            top = int(int(input("top coordinate: ")) * scale)
             bottom = int(int(input("bottom coordinate: ")) * scale)
 
             start_point = (left, top)
