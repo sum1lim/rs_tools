@@ -22,7 +22,8 @@ def output_to_window(name, image):
     original_height = len(image)
     original_width = len(image[0])
 
-    scale = 800 / original_height
+    scale = 5000 / original_height
+
     new_height = int(original_height * scale)
     new_width = int(original_width * scale)
     dsize = (new_width, new_height)
@@ -34,8 +35,10 @@ def output_to_window(name, image):
     bottom = original_height - 1
 
     while True:
+        window_name = name + "(press c to clip / press q to quit)"
+        cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
         cv2.imshow(
-            name + "(press c to clip / press q to quit)",
+            window_name,
             output,
         )
 
@@ -43,7 +46,7 @@ def output_to_window(name, image):
 
         if keyboard_input == ord("q"):
             return image[top:bottom, left:right]
-            
+
         elif keyboard_input == ord("c"):
             output = cv2.resize(np.flip(np.array(image, np.uint8), 1), dsize)
             left = int(int(input("left coordinate: ")) * scale)
@@ -56,7 +59,7 @@ def output_to_window(name, image):
 
             color = (255, 255, 255)
 
-            thickness = 2
+            thickness = 10
             output = cv2.rectangle(output, start_point, end_point, color, thickness)
 
 
