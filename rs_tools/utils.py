@@ -10,17 +10,20 @@ def output(fileName, img_li):
     array = np.array(img_li, dtype=np.uint8)
 
     img = Image.fromarray(array)
-    img.save(fileName)
-
+    try:
+        img.save(fileName)
+    except SystemError:
+        print("tile cannot extend outside image")
 
 def output_to_window(name, image, boundaries=None, flip=True):
+    print(f"Image: {name}")
     if flip:
         image = np.flip(np.array(image, np.uint8), 1)
     else:
         image = np.array(image, np.uint8)
 
     print(f"Height: {str(len(image))}")
-    print(f"Width: {str(len(image[0]))}")
+    print(f"Width: {str(len(image[0]))}\n")
 
     original_height = len(image)
     original_width = len(image[0])
@@ -51,7 +54,7 @@ def output_to_window(name, image, boundaries=None, flip=True):
             return image[int(top) : int(bottom), int(left) : int(right)]
 
         elif keyboard_input == ord("c"):
-            output = cv2.resize(np.flip(np.array(image, np.uint8), 1), dsize)
+            output = image[:]
             if not boundaries:
                 left = input("left coordinate: ")
                 right = input("right coordinate: ")

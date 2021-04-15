@@ -21,7 +21,6 @@ def main(args):
         outDir_name = f"{inDir_name}_ROI"
 
         for inFile in os.listdir(inDir_path):
-            print(f"File: {inFile}")
             try:
                 inImage = PIL.Image.open(f"{inDir_path}/{inFile}", "r")
             except PIL.UnidentifiedImageError:

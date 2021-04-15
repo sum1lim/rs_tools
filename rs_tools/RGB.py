@@ -54,16 +54,29 @@ def merge(inDir, Rfile, Gfile, Bfile):
     num_rows = Rsize[1]
     num_cols = Rsize[0]
 
-    pix_val = [
-        [
-            (
-                Rimage.getpixel((column, row))[0],
-                Gimage.getpixel((column, row))[1],
-                Bimage.getpixel((column, row))[2],
-            )
-            for column in range(num_cols)
+    try:
+        pix_val = [
+            [
+                (
+                    Rimage.getpixel((column, row))[0],
+                    Gimage.getpixel((column, row))[1],
+                    Bimage.getpixel((column, row))[2],
+                )
+                for column in range(num_cols)
+            ]
+            for row in range(num_rows)
         ]
-        for row in range(num_rows)
-    ]
+    except TypeError:
+        pix_val = [
+            [
+                (
+                    Rimage.getpixel((column, row)),
+                    Gimage.getpixel((column, row)),
+                    Bimage.getpixel((column, row)),
+                )
+                for column in range(num_cols)
+            ]
+            for row in range(num_rows)
+        ]
 
     return pix_val
