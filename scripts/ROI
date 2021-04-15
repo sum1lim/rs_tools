@@ -11,6 +11,9 @@ from os.path import isdir, isfile, exists
 
 
 def main(args):
+    boundaries = None
+    if args.left and args.right and args.top and args.bottom:
+        boundaries = (args.left, args.right, args.top, args.bottom)
     if isdir(args.input):
         inDir_path = args.input
         parentDir_path = "/".join(inDir_path.split("/")[:-1])
@@ -23,8 +26,7 @@ def main(args):
             except PIL.UnidentifiedImageError:
                 continue
             output_name = f"{'.'.join(inFile.split('.')[:-1])}_ROI"
-            outImage = output_to_window(output_name, inImage)
-            print(outImage)
+            outImage = output_to_window(output_name, inImage, boundaries)
 
             outFile = f"{parentDir_path}/{outDir_name}/{output_name}.{args.extension}"
             if not exists(f"{parentDir_path}/{outDir_name}"):
@@ -41,7 +43,7 @@ def main(args):
         inImage = PIL.Image.open(inFile_path, "r")
         outFile = f"{parentDir_path}/{inFile_name}_ROI.{args.extension}"
 
-        outImage = output_to_window(inFile_name + "_ROI", inImage)
+        outImage = output_to_window(inFile_name + "_ROI", inImage, boundaries)
         try:
             output(outFile, outImage)
         except ValueError:
@@ -57,6 +59,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--input", type=str, help="Please provide bands collection path"
     )
+    parser.add_argument("--left", type=str, help="Left boundary")
+    parser.add_argument("--right", type=str, help="Right boundary")
+    parser.add_argument("--top", type=str, help="Top boundary")
+    parser.add_argument("--bottom", type=str, help="Bottom boundary")
     parser.add_argument(
         "--extension",
         type=str,

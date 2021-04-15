@@ -13,7 +13,7 @@ def output(fileName, img_li):
     img.save(fileName)
 
 
-def output_to_window(name, image):
+def output_to_window(name, image, boundaries=None):
     image = np.flip(np.array(image, np.uint8), 1)
 
     print(f"Height: {str(len(image))}")
@@ -45,17 +45,20 @@ def output_to_window(name, image):
         keyboard_input = cv2.waitKey(0)
 
         if keyboard_input == ord("q"):
-            return image[top:bottom, left:right]
+            return image[int(top) : int(bottom), int(left) : int(right)]
 
         elif keyboard_input == ord("c"):
             output = cv2.resize(np.flip(np.array(image, np.uint8), 1), dsize)
-            left = int(input("left coordinate: "))
-            right = int(input("right coordinate: "))
-            top = int(input("top coordinate: "))
-            bottom = int(input("bottom coordinate: "))
+            if not boundaries:
+                left = input("left coordinate: ")
+                right = input("right coordinate: ")
+                top = input("top coordinate: ")
+                bottom = input("bottom coordinate: ")
+            else:
+                (left, right, top, bottom) = boundaries
 
-            start_point = (int(left * scale), int(top * scale))
-            end_point = (int(right * scale), int(bottom * scale))
+            start_point = (int(int(left) * scale), int(int(top) * scale))
+            end_point = (int(int(right) * scale), int(int(bottom) * scale))
 
             color = (255, 255, 255)
 
