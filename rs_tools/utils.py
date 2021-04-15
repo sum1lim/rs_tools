@@ -15,6 +15,7 @@ def output(fileName, img_li):
     except SystemError:
         print("tile cannot extend outside image")
 
+
 def output_to_window(name, image, boundaries=None, flip=True):
     print(f"Image: {name}")
     if flip:
@@ -91,7 +92,10 @@ def pix_val_list(inImage, RGB=True, RGB_idx=0, mask=0):
                 for row in range(num_rows)
             ]
         except TypeError:
-            print("3 bands required", file=sys.stderr)
+            return [
+                [mask ^ (inImage.getpixel((column, row))) for column in range(num_cols)]
+                for row in range(num_rows)
+            ]
             sys.exit()
 
     else:
