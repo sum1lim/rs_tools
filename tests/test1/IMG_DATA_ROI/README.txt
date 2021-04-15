@@ -1,8 +1,7 @@
 Area of Interest: Victoria International Airport
 
 Sentinal-2 Image Courtesy of ESA.
-Copernicus Sentinel data [2021]' for Sentinel data
-Contains modified Copernicus Sentinel data [Year]' for Sentinel data
+Contains modified Copernicus Sentinel data [2021]
 
 Original Data:
 Download URL: https://scihub.copernicus.eu/dhus/odata/v1/Products('ee1a4262-dd87-4573-b510-9eff3c392354')/$value
