@@ -13,8 +13,11 @@ def output(fileName, img_li):
     img.save(fileName)
 
 
-def output_to_window(name, image, boundaries=None):
-    image = np.flip(np.array(image, np.uint8), 1)
+def output_to_window(name, image, boundaries=None, flip=True):
+    if flip:
+        image = np.flip(np.array(image, np.uint8), 1)
+    else:
+        image = np.array(image, np.uint8)
 
     print(f"Height: {str(len(image))}")
     print(f"Width: {str(len(image[0]))}")

@@ -21,12 +21,13 @@ def main(args):
         outDir_name = f"{inDir_name}_ROI"
 
         for inFile in os.listdir(inDir_path):
+            print("File: {inFile}")
             try:
                 inImage = PIL.Image.open(f"{inDir_path}/{inFile}", "r")
             except PIL.UnidentifiedImageError:
                 continue
             output_name = f"{'.'.join(inFile.split('.')[:-1])}_ROI"
-            outImage = output_to_window(output_name, inImage, boundaries)
+            outImage = output_to_window(output_name, inImage, boundaries, args.flip)
 
             outFile = f"{parentDir_path}/{outDir_name}/{output_name}.{args.extension}"
             if not exists(f"{parentDir_path}/{outDir_name}"):
@@ -43,7 +44,9 @@ def main(args):
         inImage = PIL.Image.open(inFile_path, "r")
         outFile = f"{parentDir_path}/{inFile_name}_ROI.{args.extension}"
 
-        outImage = output_to_window(inFile_name + "_ROI", inImage, boundaries)
+        outImage = output_to_window(
+            inFile_name + "_ROI", inImage, boundaries, args.flip
+        )
         try:
             output(outFile, outImage)
         except ValueError:
@@ -59,16 +62,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "--input", type=str, help="Please provide bands collection path"
     )
-    parser.add_argument("--left", type=str, help="Left boundary")
-    parser.add_argument("--right", type=str, help="Right boundary")
-    parser.add_argument("--top", type=str, help="Top boundary")
-    parser.add_argument("--bottom", type=str, help="Bottom boundary")
+    parser.add_argument("--left", type=int, help="Left boundary")
+    parser.add_argument("--right", type=int, help="Right boundary")
+    parser.add_argument("--top", type=int, help="Top boundary")
+    parser.add_argument("--bottom", type=int, help="Bottom boundary")
     parser.add_argument(
         "--extension",
         type=str,
         help="Please provide the output file extension(Ex. png, jpg, tiff)",
         choices=["png", "jpg", "tiff"],
     )
+    parser.add_argument("--flip", type=bool, help="Flip back to front")
 
     args = parser.parse_args()
     main(args)
