@@ -16,5 +16,6 @@ setup(
         ./scripts/K_Means
         ./scripts/NDVI
         ./scripts/SOBEL
+        ./scripts/ROI
     """.split(),
 )

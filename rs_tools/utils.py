@@ -49,13 +49,13 @@ def output_to_window(name, image):
 
         elif keyboard_input == ord("c"):
             output = cv2.resize(np.flip(np.array(image, np.uint8), 1), dsize)
-            left = int(int(input("left coordinate: ")) * scale)
-            right = int(int(input("right coordinate: ")) * scale)
-            top = int(int(input("top coordinate: ")) * scale)
-            bottom = int(int(input("bottom coordinate: ")) * scale)
+            left = int(input("left coordinate: "))
+            right = int(input("right coordinate: "))
+            top = int(input("top coordinate: "))
+            bottom = int(input("bottom coordinate: "))
 
-            start_point = (left, top)
-            end_point = (right, bottom)
+            start_point = (int(left * scale), int(top * scale))
+            end_point = (int(right * scale), int(bottom * scale))
 
             color = (255, 255, 255)
 

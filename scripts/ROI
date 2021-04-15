@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+from rs_tools.install import install
+
+install()
+
+import argparse
+import os
+import PIL
+from rs_tools.utils import output, output_to_window
+from os.path import isdir, isfile, exists
+
+
+def main(args):
+    if isdir(args.input):
+        inDir_path = args.input
+        parentDir_path = "/".join(inDir_path.split("/")[:-1])
+        inDir_name = inDir_path.split("/")[-1]
+        outDir_name = f"{inDir_name}_ROI"
+
+        for inFile in os.listdir(inDir_path):
+            try:
+                inImage = PIL.Image.open(f"{inDir_path}/{inFile}", "r")
+            except PIL.UnidentifiedImageError:
+                continue
+            output_name = f"{'.'.join(inFile.split('.')[:-1])}_ROI"
+            outImage = output_to_window(output_name, inImage)
+            print(outImage)
+
+            outFile = f"{parentDir_path}/{outDir_name}/{output_name}.{args.extension}"
+            if not exists(f"{parentDir_path}/{outDir_name}"):
+                os.mkdir(f"{parentDir_path}/{outDir_name}")
+            try:
+                output(outFile, outImage)
+            except ValueError:
+                print("Not a valid file type")
+
+    elif isfile(args.input):
+        inFile_path = args.input
+        parentDir_path = "/".join(inFile_path.split("/")[:-1])
+        inFile_name = ".".join(inFile_path.split("/")[-1].split(".")[:-1])
+        inImage = PIL.Image.open(inFile_path, "r")
+        outFile = f"{parentDir_path}/{inFile_name}_ROI.{args.extension}"
+
+        outImage = output_to_window(inFile_name + "_ROI", inImage)
+        try:
+            output(outFile, outImage)
+        except ValueError:
+            print("Not a valid file type")
+
+    else:
+        raise ValueError
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--input", type=str, help="Please provide bands collection path"
+    )
+    parser.add_argument(
+        "--extension",
+        type=str,
+        help="Please provide the output file extension(Ex. png, jpg, tiff)",
+        choices=["png", "jpg", "tiff"],
+    )
+
+    args = parser.parse_args()
+    main(args)
