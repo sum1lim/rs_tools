@@ -7,7 +7,7 @@ from rs_tools.install import install
 
 def output(fileName, img_li):
     install()
-    array = np.array(img_li, dtype=np.uint8)
+    array = np.array(img_li)
 
     img = Image.fromarray(array)
     try:
@@ -19,9 +19,9 @@ def output(fileName, img_li):
 def output_to_window(name, image, boundaries=None, flip=True):
     print(f"Image: {name}")
     if flip:
-        image = np.flip(np.array(image, np.uint8), 1)
+        image = np.flip(np.array(image), 1)
     else:
-        image = np.array(image, np.uint8)
+        image = np.array(image)
 
     print(f"Height: {str(len(image))}")
     print(f"Width: {str(len(image[0]))}\n")
