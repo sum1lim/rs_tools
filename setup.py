@@ -17,5 +17,6 @@ setup(
         ./scripts/NDVI
         ./scripts/SOBEL
         ./scripts/ROI
+        ./scripts/gaussian
     """.split(),
 )

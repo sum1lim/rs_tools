@@ -25,3 +25,4 @@ def install():
     pip_install("numpy", "numpy")
     pip_install("PIL", "pillow")
     pip_install("cv2", "opencv-python")
+    pip_install("scipy", "scipy")
