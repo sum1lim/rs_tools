@@ -37,7 +37,10 @@ def output_to_window(name, image, boundaries=None, flip=True):
     new_height = int(original_height * scale)
     new_width = int(original_width * scale)
     dsize = (new_width, new_height)
-    output = cv2.resize(image.astype(np.uint8), dsize)
+    try:
+        output = cv2.resize(image, dsize)
+    except cv2.error:
+        output = cv2.resize(image.astype(np.uint8), dsize)
 
     left = 0
     right = original_width - 1
