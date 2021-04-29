@@ -9,8 +9,11 @@ def output(fileName, img_li):
     install()
     array = np.array(img_li)
 
-    img = Image.fromarray(array)
     try:
+        img = Image.fromarray(array)
+        img.save(fileName)
+    except TypeError:
+        img = Image.fromarray(array.astype(np.uint8))
         img.save(fileName)
     except SystemError:
         print("tile cannot extend outside image")
@@ -34,7 +37,7 @@ def output_to_window(name, image, boundaries=None, flip=True):
     new_height = int(original_height * scale)
     new_width = int(original_width * scale)
     dsize = (new_width, new_height)
-    output = cv2.resize(image, dsize)
+    output = cv2.resize(image.astype(np.uint8), dsize)
 
     left = 0
     right = original_width - 1
