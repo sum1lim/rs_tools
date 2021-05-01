@@ -18,5 +18,6 @@ setup(
         ./scripts/SOBEL
         ./scripts/ROI
         ./scripts/gaussian
+        ./scripts/contrast
     """.split(),
 )

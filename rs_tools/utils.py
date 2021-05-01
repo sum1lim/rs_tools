@@ -5,6 +5,15 @@ from PIL import Image, ImageFile, ImageDraw
 from rs_tools.install import install
 
 
+def decompose_filepath(filepath):
+    parent_directories = filepath.split("/")[:-1]
+    indir_path = "/".join(parent_directories)
+    File = filepath.split("/")[-1]
+    [filename, extension] = File.split(".")
+
+    return (indir_path, filename, extension)
+
+
 def output(fileName, img_li):
     install()
     array = np.array(img_li)

@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+import argparse
+import os
+from rs_tools.contrast import contrast
+from rs_tools.utils import output_to_window, decompose_filepath, output
+
+
+def main(args):
+    inFile = args.input
+    inFile_name = args.input.split("/")[-1].split(".")[-2]
+
+    outImage = contrast(inFile)
+    output_to_window(f"{inFile_name}.{args.extension}", outImage)
+
+    if args.extension:
+        (dir_path, filename, _) = decompose_filepath(args.input)
+
+        try:
+            output(
+                os.path.join(dir_path, f"{filename}_contrast.{args.extension}"),
+                outImage,
+            )
+
+        except ValueError:
+            print("Not a valid file type")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--input", type=str, help="Please provide bands collection path"
+    )
+    parser.add_argument(
+        "--extension",
+        type=str,
+        help="Please provide the output file extension(Ex. png, jpg, tiff)",
+        choices=["png", "jpg", "tiff"],
+    )
+
+    args = parser.parse_args()
+    main(args)
