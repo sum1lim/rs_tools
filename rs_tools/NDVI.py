@@ -2,7 +2,7 @@ from rs_tools.RGB import extract, merge
 import sys
 import re
 import os
-import numpy
+import numpy as np
 from PIL import Image, ImageFile, ImageDraw
 
 
@@ -37,4 +37,5 @@ def generate_NDVI(inDir, NIR, VIS, extension):
             j += 1
         i += 1
 
+    NDVI_list = np.int_(np.array(NDVI_list))
     return NDVI_list
