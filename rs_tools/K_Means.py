@@ -56,6 +56,7 @@ def clustering(firstCoord, secondCoord, K, B):
         i += 1
 
     count = 0
+    cart_dimension = [0,0]
     while count < K:
         cart_location = {}
         pix_location = {}
@@ -81,25 +82,30 @@ def clustering(firstCoord, secondCoord, K, B):
                 pix_location[c].append(k)
                 cart_location[c].append(v)
 
+            if cart_location[c][-1][0] > cart_dimension[0]:
+                cart_dimension[0] = cart_location[c][-1][0]
+            if cart_location[c][-1][1] > cart_dimension[1]:
+                cart_dimension[1] = cart_location[c][-1][1]
+
         for k in cart_location.keys():
             B_points[k] = mean(cart_location[k])
 
         count += 1
 
-    return (pix_location, cart_location)
+    return (pix_location, cart_location, cart_dimension)
 
 
-def plot(cart_location):
+def plot(cart_location, cart_dimension):
     plot = []
     i = 0
-    while i < 259:
+    while i < cart_dimension[1]+4:
         j = 0
         row = []
         row.append(colors[6])
         row.append(colors[6])
         row.append(colors[6])
 
-        while j < 256:
+        while j < cart_dimension[0]+4:
             if i > 2:
                 row.append(colors[7])
             else:
@@ -115,7 +121,7 @@ def plot(cart_location):
 
     Y_reverse = []
     i = 0
-    while i < 259:
+    while i < len(plot):
         Y_reverse.append(plot[258 - i])
         i += 1
 
@@ -149,9 +155,7 @@ def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
     firstCoord = NIR_dict["R"]
     secondCoord = VIS_dict["G"]
 
-    locations = clustering(firstCoord, secondCoord, K, B)
-    pix_location = locations[0]
-    cart_location = locations[1]
+    (pix_location, cart_location, cart_dimension) = clustering(firstCoord, secondCoord, K, B)
 
     pix_val = firstCoord[:]
     pix_count = 0
@@ -160,6 +164,6 @@ def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
             pix_val[location[0]][location[1]] = colors[c]
         pix_count += len(pix_location[c])
 
-    plot_val = plot(cart_location)
+    plot_val = plot(cart_location, cart_dimension)
 
     return pix_val, plot_val, pix_location, pix_count
