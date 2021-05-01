@@ -26,7 +26,9 @@ def main(args):
             except PIL.UnidentifiedImageError:
                 continue
             output_name = f"{'.'.join(inFile.split('.')[:-1])}_ROI"
-            outImage = output_to_window(output_name, inImage, boundaries, args.flip)
+            outImage = output_to_window(
+                output_name, inImage, boundaries, flip=args.flip
+            )
 
             outFile = f"{parentDir_path}/{outDir_name}/{output_name}.{args.extension}"
             if not exists(f"{parentDir_path}/{outDir_name}"):
@@ -44,7 +46,7 @@ def main(args):
         outFile = f"{parentDir_path}/{inFile_name}_ROI.{args.extension}"
 
         outImage = output_to_window(
-            inFile_name + "_ROI", inImage, boundaries, args.flip
+            inFile_name + "_ROI", inImage, boundaries, flip=args.flip
         )
         try:
             output(outFile, outImage)
@@ -71,7 +73,9 @@ if __name__ == "__main__":
         help="Please provide the output file extension(Ex. png, jpg, tiff)",
         choices=["png", "jpg", "tiff"],
     )
-    parser.add_argument("--flip", type=bool, help="Flip back to front")
+    parser.add_argument(
+        "--flip", type=bool, default=False, help="Flip back to front. True if jp2"
+    )
 
     args = parser.parse_args()
     main(args)

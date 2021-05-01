@@ -28,7 +28,7 @@ def output(fileName, img_li):
         print("tile cannot extend outside image")
 
 
-def output_to_window(name, image, boundaries=None, flip=True):
+def output_to_window(name, image, boundaries=None, flip=False):
     print(f"Image: {name}")
     if flip:
         image = np.flip(np.array(image), 1)

@@ -1,5 +1,5 @@
 from rs_tools.utils import pix_val_list, convolution, output_to_window
-import numpy
+import numpy as np
 import sys
 from PIL import Image, ImageFile, ImageDraw
 
@@ -35,4 +35,4 @@ def generate_SOBEL(inFile):
                 + vertical_Gaussian_top[row][col]
             )
 
-    return SOBEL_Gaussian
+    return np.int_(np.array(SOBEL_Gaussian))
