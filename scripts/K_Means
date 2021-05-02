@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from rs_tools.install import install
+
 install()
 
 import argparse
@@ -12,9 +13,11 @@ from rs_tools.utils import output, output_to_window
 from rs_tools.K_Means import generate_K_means, colorNames
 
 
-def write_stats(pix_location, pix_count, inDir):
+def write_stats(args, pix_location, pix_count, outDir):
 
-    with open(re.sub("$", "_KMeans_stats.csv", inDir), "w", newline="") as statsFile:
+    with open(
+        re.sub("$", f"/{args.VIS}_{args.NIR}_KMeans_stats.csv", outDir), "w", newline=""
+    ) as statsFile:
         writer = csv.writer(statsFile)
         writer.writerow(["class", "#pixels", "pecentage(%)"])
         for c in pix_location.keys():
@@ -26,6 +29,7 @@ def write_stats(pix_location, pix_count, inDir):
                 ]
             )
         writer.writerow(["total", pix_count, 100])
+
 
 def print_stats(pix_location, pix_count):
     print("\nResult:")
@@ -39,6 +43,7 @@ def print_stats(pix_location, pix_count):
             + "%)"
         )
     print("\nTotal: " + str(pix_count) + "pixels")
+
 
 def main(args):
 
@@ -76,18 +81,25 @@ def main(args):
     output_to_window(plot_output_name, plot_val)
 
     if args.extension:
-        outExtension = "." + args.extension
-        classifiedFile = re.sub("$", "_KMeans" + outExtension, inDir)
+        outDir = f"{inDir}_KMeans"
+        try:
+            os.mkdir(outDir)
+        except FileExistsError:
+            None
+        classifiedFile = re.sub(
+            "$", f"/{args.VIS}_{args.NIR}_KMeans.{args.extension}", outDir
+        )
 
         try:
             output(classifiedFile, pix_val)
         except ValueError:
             print("Not a valid file type")
 
-        plotFile = re.sub("$", "_KMeans_plot.png", inDir)
+        plotFile = re.sub("$", f"/{args.VIS}_{args.NIR}_KMeans_plot.png", outDir)
         output(plotFile, plot_val)
 
-        write_stats(pix_location, pix_count, inDir)
+        write_stats(args, pix_location, pix_count, outDir)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
