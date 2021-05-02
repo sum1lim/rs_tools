@@ -13,11 +13,17 @@ def main(args):
     output_to_window(f"{inFile_name}.{args.extension}", outImage)
 
     if args.extension:
-        (dir_path, filename, _) = decompose_filepath(args.input)
+        (inDir, filename, _) = decompose_filepath(args.input)
+
+        outDir = f"{inDir}_contrast"
+        try:
+            os.mkdir(outDir)
+        except FileExistsError:
+            None
 
         try:
             output(
-                os.path.join(dir_path, f"{filename}_contrast.{args.extension}"),
+                os.path.join(outDir, f"{filename}.{args.extension}"),
                 outImage,
             )
 
