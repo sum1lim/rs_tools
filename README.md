@@ -1,6 +1,6 @@
-# Remote Sensing(RS) Image Processing Tools                        
+# Remote Sensing Image Processing Tools                        
 ## A set of programs that are widely used in Remote Sensing image processing software 
-*Pillow library used for Image Processing*
+*Third-party Python Libraries used: [Pillow](https://pypi.org/project/Pillow/), [numpy](https://pypi.org/project/numpy/), [opencv-python](https://pypi.org/project/opencv-python/) and [scipy](https://pypi.org/project/scipy/)*
 <br/><br/>
 **To install packages:**
 ```
@@ -12,7 +12,7 @@ pip install .
 
 ### Packages & scripts <br/>
 * **RGB**<br/>
-    Extracts and merges RGB components of an image(s).<br/>
+    Extracts and merges RGB components of images.<br/>
     <br/>
     To run `RGB_extract` script:<br/>
     ```
