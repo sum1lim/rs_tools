@@ -84,7 +84,7 @@ def output_to_window(name, image, boundaries=None, flip=False):
 
             color = (255, 255, 255)
 
-            thickness = 10
+            thickness = 100
             output = cv2.rectangle(output, start_point, end_point, color, thickness)
 
 
@@ -174,3 +174,16 @@ def convolution(image, filter):
         result.append(row_vals)
 
     return result
+
+
+def increase_image_size_limit(inFile_path):
+    while True:
+        increase_limit = input(
+            "The input file exceeds the limit size. Do you want to increase the limit and continue? (y/n): "
+        )
+        if increase_limit == "y":
+            Image.MAX_IMAGE_PIXELS = None
+            inImage = Image.open(inFile_path, "r")
+            return inImage
+        elif increase_limit == "n":
+            sys.exit()

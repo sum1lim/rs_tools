@@ -6,23 +6,9 @@ install()
 import argparse
 import os
 import sys
-import PIL
 import PIL.Image
-from rs_tools.utils import output, output_to_window
+from rs_tools.utils import output, output_to_window, increase_image_size_limit
 from os.path import isdir, isfile, exists
-
-
-def increase_image_size_limit(inFile_path):
-    while True:
-        increase_limit = input(
-            "The input file exceeds the limit size. Do you want to increase the limit and continue? (y/n): "
-        )
-        if increase_limit == "y":
-            PIL.Image.MAX_IMAGE_PIXELS = None
-            inImage = PIL.Image.open(inFile_path, "r")
-            return inImage
-        elif increase_limit == "n":
-            sys.exit()
 
 
 def main(args):
