@@ -5,9 +5,24 @@ install()
 
 import argparse
 import os
+import sys
 import PIL
+import PIL.Image
 from rs_tools.utils import output, output_to_window
 from os.path import isdir, isfile, exists
+
+
+def increase_image_size_limit(inFile_path):
+    while True:
+        increase_limit = input(
+            "The input file exceeds the limit size. Do you want to increase the limit and continue? (y/n): "
+        )
+        if increase_limit == "y":
+            PIL.Image.MAX_IMAGE_PIXELS = None
+            inImage = PIL.Image.open(inFile_path, "r")
+            return inImage
+        elif increase_limit == "n":
+            sys.exit()
 
 
 def main(args):
@@ -25,6 +40,8 @@ def main(args):
                 inImage = PIL.Image.open(f"{inDir_path}/{inFile}", "r")
             except PIL.UnidentifiedImageError:
                 continue
+            except PIL.Image.DecompressionBombError:
+                inImage = increase_image_size_limit(inFile_path)
             output_name = f"{'.'.join(inFile.split('.')[:-1])}_ROI"
             outImage = output_to_window(
                 output_name, inImage, boundaries, flip=args.flip
@@ -42,7 +59,11 @@ def main(args):
         inFile_path = args.input
         parentDir_path = "/".join(inFile_path.split("/")[:-1])
         inFile_name = ".".join(inFile_path.split("/")[-1].split(".")[:-1])
-        inImage = PIL.Image.open(inFile_path, "r")
+        try:
+            inImage = PIL.Image.open(inFile_path, "r")
+        except PIL.Image.DecompressionBombError:
+            inImage = increase_image_size_limit(inFile_path)
+
         outFile = f"{parentDir_path}/{inFile_name}_ROI.{args.extension}"
 
         outImage = output_to_window(
