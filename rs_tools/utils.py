@@ -76,16 +76,14 @@ def output_to_window(name, image, boundaries=None, flip=False):
                 right = input("right coordinate: ")
                 top = input("top coordinate: ")
                 bottom = input("bottom coordinate: ")
+                print()
             else:
                 (left, right, top, bottom) = boundaries
 
-            start_point = (int(int(left) * scale), int(int(top) * scale))
-            end_point = (int(int(right) * scale), int(int(bottom) * scale))
-
-            color = (255, 255, 255)
-
-            thickness = 100
-            output = cv2.rectangle(output, start_point, end_point, color, thickness)
+            cv2.imshow(
+                "clipped",
+                image[int(top) : int(bottom), int(left) : int(right)],
+            )
 
 
 def euclidean(p, q):
