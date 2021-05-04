@@ -10,7 +10,7 @@ def main(args):
     inFile_name = args.input.split("/")[-1].split(".")[-2]
 
     outImage = contrast(inFile)
-    output_to_window(f"{inFile_name}.{args.extension}", outImage)
+    output_to_window(f"{inFile_name}.{args.extension}", outImage, flip=args.flip)
 
     if args.extension:
         (inDir, filename, _) = decompose_filepath(args.input)
@@ -42,6 +42,9 @@ if __name__ == "__main__":
         type=str,
         help="Please provide the output file extension(Ex. png, jpg, tiff)",
         choices=["png", "jpg", "tiff"],
+    )
+    parser.add_argument(
+        "--flip", type=bool, default=False, help="Flip back to front. True if jp2"
     )
 
     args = parser.parse_args()
