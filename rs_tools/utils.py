@@ -59,7 +59,7 @@ def clip(image, boundaries):
         output,
     )
 
-    return left, right, top, bottom
+    return clipped_image
 
 
 def output_to_window(name, image, boundaries=None, flip=False):
@@ -81,30 +81,32 @@ def output_to_window(name, image, boundaries=None, flip=False):
     new_width = int(original_width * scale)
     dsize = (new_width, new_height)
     try:
-        output = cv2.resize(image, dsize)
+        window_output = cv2.resize(image, dsize)
     except cv2.error:
-        output = cv2.resize(image.astype(np.uint8), dsize)
+        window_output = cv2.resize(image.astype(np.uint8), dsize)
 
     left = 0
     right = original_width - 1
     top = 0
     bottom = original_height - 1
 
+    output = image[:]
+
     while True:
         window_name = name + "(press c to clip / e to erase / q to quit)"
         cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
         cv2.imshow(
             window_name,
-            output,
+            window_output,
         )
 
         keyboard_input = cv2.waitKey(0)
 
         if keyboard_input == ord("q"):
-            return image[int(top) : int(bottom), int(left) : int(right)]
+            return output
 
         elif keyboard_input == ord("c"):
-            (left, right, top, bottom) = clip(image, boundaries)
+            output = clip(image, boundaries)
 
 
 def euclidean(p, q):
