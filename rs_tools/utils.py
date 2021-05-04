@@ -28,17 +28,28 @@ def output(fileName, img_li):
         print("tile cannot extend outside image")
 
 
+def window(image, dsize, window_name):
+    cv2.destroyWindow(window_name)
+
+    try:
+        output = cv2.resize(image, dsize)
+    except cv2.error:
+        output = cv2.resize(image.astype(np.uint8), dsize)
+
+    cv2.imshow(window_name, output)
+
+
 def clip(image, boundaries):
     if not boundaries:
-        left = input("left coordinate: ")
-        right = input("right coordinate: ")
-        top = input("top coordinate: ")
-        bottom = input("bottom coordinate: ")
+        left = int(input("left coordinate: "))
+        right = int(input("right coordinate: "))
+        top = int(input("top coordinate: "))
+        bottom = int(input("bottom coordinate: "))
         print()
     else:
         (left, right, top, bottom) = boundaries
 
-    clipped_image = image[int(top) : int(bottom), int(left) : int(right)]
+    clipped_image = image[top:bottom, left:right]
 
     original_height = len(clipped_image)
     original_width = len(clipped_image[0])
@@ -49,17 +60,36 @@ def clip(image, boundaries):
     new_width = int(original_width * scale)
     dsize = (new_width, new_height)
 
-    try:
-        output = cv2.resize(clipped_image, dsize)
-    except cv2.error:
-        output = cv2.resize(clipped_image.astype(np.uint8), dsize)
-
-    cv2.imshow(
-        "clipped",
-        output,
-    )
+    window(clipped_image, dsize, "clipped")
 
     return clipped_image
+
+
+def erase(image, boundaries):
+    if not boundaries:
+        left = int(input("left coordinate: "))
+        right = int(input("right coordinate: "))
+        top = int(input("top coordinate: "))
+        bottom = int(input("bottom coordinate: "))
+        print()
+    else:
+        (left, right, top, bottom) = boundaries
+
+    erased_image = image.copy()
+    erased_image[top:bottom, left:right] = np.zeros((bottom - top, right - left))
+
+    original_height = len(erased_image)
+    original_width = len(erased_image[0])
+
+    scale = 5000 / original_height
+
+    new_height = int(original_height * scale)
+    new_width = int(original_width * scale)
+    dsize = (new_width, new_height)
+
+    window(erased_image, dsize, "erased")
+
+    return erased_image
 
 
 def output_to_window(name, image, boundaries=None, flip=False):
@@ -90,7 +120,7 @@ def output_to_window(name, image, boundaries=None, flip=False):
     top = 0
     bottom = original_height - 1
 
-    output = image[:]
+    output = image.copy()
 
     while True:
         window_name = name + "(press c to clip / e to erase / q to quit)"
@@ -107,6 +137,9 @@ def output_to_window(name, image, boundaries=None, flip=False):
 
         elif keyboard_input == ord("c"):
             output = clip(image, boundaries)
+
+        elif keyboard_input == ord("e"):
+            output = erase(image, boundaries)
 
 
 def euclidean(p, q):
