@@ -1,6 +1,6 @@
 Area of Interest: Victoria International Airport
 
-Sentinal-2 Image Courtesy of ESA.
+Sentinel-2 Image Courtesy of ESA.
 Contains modified Copernicus Sentinel data [2021]
 
 Date: 2021-04-15T19:09:11.024Z

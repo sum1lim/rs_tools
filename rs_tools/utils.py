@@ -28,6 +28,40 @@ def output(fileName, img_li):
         print("tile cannot extend outside image")
 
 
+def clip(image, boundaries):
+    if not boundaries:
+        left = input("left coordinate: ")
+        right = input("right coordinate: ")
+        top = input("top coordinate: ")
+        bottom = input("bottom coordinate: ")
+        print()
+    else:
+        (left, right, top, bottom) = boundaries
+
+    clipped_image = image[int(top) : int(bottom), int(left) : int(right)]
+
+    original_height = len(clipped_image)
+    original_width = len(clipped_image[0])
+
+    scale = 5000 / original_height
+
+    new_height = int(original_height * scale)
+    new_width = int(original_width * scale)
+    dsize = (new_width, new_height)
+
+    try:
+        output = cv2.resize(clipped_image, dsize)
+    except cv2.error:
+        output = cv2.resize(clipped_image.astype(np.uint8), dsize)
+
+    cv2.imshow(
+        "clipped",
+        output,
+    )
+
+    return left, right, top, bottom
+
+
 def output_to_window(name, image, boundaries=None, flip=False):
     print(f"Image: {name}")
     if flip:
@@ -57,7 +91,7 @@ def output_to_window(name, image, boundaries=None, flip=False):
     bottom = original_height - 1
 
     while True:
-        window_name = name + "(press c to clip / press q to quit)"
+        window_name = name + "(press c to clip / e to erase / q to quit)"
         cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
         cv2.imshow(
             window_name,
@@ -70,20 +104,7 @@ def output_to_window(name, image, boundaries=None, flip=False):
             return image[int(top) : int(bottom), int(left) : int(right)]
 
         elif keyboard_input == ord("c"):
-            output = image[:]
-            if not boundaries:
-                left = input("left coordinate: ")
-                right = input("right coordinate: ")
-                top = input("top coordinate: ")
-                bottom = input("bottom coordinate: ")
-                print()
-            else:
-                (left, right, top, bottom) = boundaries
-
-            cv2.imshow(
-                "clipped",
-                image[int(top) : int(bottom), int(left) : int(right)],
-            )
+            (left, right, top, bottom) = clip(image, boundaries)
 
 
 def euclidean(p, q):

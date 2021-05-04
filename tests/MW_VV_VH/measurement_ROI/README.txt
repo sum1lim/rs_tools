@@ -1,6 +1,6 @@
 Area of Interest: Svalbard Archipelago
 
-Sentinal-1 Image Courtesy of ESA.
+Sentinel-1 Image Courtesy of ESA.
 Contains modified Copernicus Sentinel data [2021]
 
 Date: 2021-04-30T06:15:35.794Z
