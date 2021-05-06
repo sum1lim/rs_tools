@@ -19,5 +19,6 @@ setup(
         ./scripts/ROI
         ./scripts/gaussian
         ./scripts/contrast
+        ./scripts/downscale
     """.split(),
 )
