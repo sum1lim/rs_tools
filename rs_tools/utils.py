@@ -1,5 +1,6 @@
 import cv2
 import sys
+import os
 import numpy as np
 from PIL import Image, ImageFile, ImageDraw
 from rs_tools.install import install
@@ -241,3 +242,22 @@ def increase_image_size_limit(inFile_path):
             return inImage
         elif increase_limit == "n":
             sys.exit()
+
+
+def mkdir_output(inFile_path, appending_tail_string, extension, outImage):
+    (inDir, filename, _) = decompose_filepath(inFile_path)
+
+    outDir = f"{inDir}_{appending_tail_string}"
+    try:
+        os.mkdir(outDir)
+    except FileExistsError:
+        None
+
+    try:
+        output(
+            os.path.join(outDir, f"{filename}.{extension}"),
+            outImage,
+        )
+
+    except ValueError:
+        print("Not a valid file type")
