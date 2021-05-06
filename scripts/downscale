@@ -3,6 +3,9 @@ from rs_tools.install import install
 
 install()
 
+import os
+import sys
+from os.path import isdir, isfile, exists
 import argparse
 import numpy as np
 import cv2
@@ -10,36 +13,57 @@ from rs_tools.utils import output, output_to_window, mkdir_output
 
 
 def main(args):
-    inFile = args.input
+    if isdir(args.input):
+        inDir = args.input
+        for inFile in os.listdir(inDir):
+            inImage = cv2.imread(f"{inDir}/{inFile}", cv2.IMREAD_UNCHANGED)
+            if type(inImage) != np.ndarray:
+                continue
 
-    try:
+            print("Original Dimensions : ", inImage.shape)
+
+            width = int(inImage.shape[1] / args.divisor)
+            height = int(inImage.shape[0] / args.divisor)
+            dim = (width, height)
+
+            downscaled = cv2.resize(inImage, dim, interpolation=cv2.INTER_AREA)
+
+            print("Downscaled Dimensions : ", downscaled.shape)
+
+            output_to_window("downscaled", downscaled)
+
+            if args.extension:
+                mkdir_output(
+                    f"{inDir}/{inFile}", "downscaled", args.extension, downscaled
+                )
+
+    elif isfile(args.input):
+        inFile = args.input
         inImage = cv2.imread(inFile, cv2.IMREAD_UNCHANGED)
-    except:
-        print("No such file or directory", file=sys.stderr)
-        exit(1)
+        if type(inImage) != np.ndarray:
+            sys.exit()
 
-    print("Original Dimensions : ", inImage.shape)
+        print("Original Dimensions : ", inImage.shape)
 
-    scale_percent = 60  # percent of original size
-    width = int(inImage.shape[1] / args.divisor)
-    height = int(inImage.shape[0] / args.divisor)
-    dim = (width, height)
+        width = int(inImage.shape[1] / args.divisor)
+        height = int(inImage.shape[0] / args.divisor)
+        dim = (width, height)
 
-    downscaled = cv2.resize(inImage, dim, interpolation=cv2.INTER_AREA)
+        downscaled = cv2.resize(inImage, dim, interpolation=cv2.INTER_AREA)
 
-    print("Downscaled Dimensions : ", downscaled.shape)
+        print("Downscaled Dimensions : ", downscaled.shape)
 
-    output_to_window("downscaled", downscaled)
+        output_to_window("downscaled", downscaled)
 
-    if args.extension:
-        mkdir_output(inFile, "downscaled", args.extension, downscaled)
+        if args.extension:
+            mkdir_output(inFile, "downscaled", args.extension, downscaled)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--input", type=str, help="Please provide bands collection path"
+        "--input", type=str, help="Please provide input file or directory"
     )
     parser.add_argument(
         "--extension",
