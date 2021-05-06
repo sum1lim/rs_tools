@@ -26,3 +26,5 @@ def install():
     pip_install("PIL", "pillow")
     pip_install("cv2", "opencv-python")
     pip_install("scipy", "scipy")
+    pip_install("matplotlib", "matplotlib")
+    pip_install("skimage", "scikit-image")
