@@ -2,11 +2,8 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-from skimage.feature import greycomatrix, greycoprops
-from skimage import data
 
-
-def GLCM(inFile):
+def generate_GLCM(inFile):
     try:
         inImage = cv2.imread(inFile, 0)
     except:
@@ -21,7 +18,7 @@ def GLCM(inFile):
     GLCM_matrices = []
 
     for row in range(num_rows):
-        GLCM_matrices.append([])
+        GLCM_row = []
         for col in range(num_cols):
             left, right, top, bottom = col - 5, col + 6, row - 5, row + 6
 
@@ -63,5 +60,9 @@ def GLCM(inFile):
                         ] += 1  # northeast direction
                     except IndexError:
                         None
+
+            GLCM_row.append(histogram.astype(int))
+
+        GLCM_matrices.append(GLCM_row)
 
     return GLCM_matrices

@@ -4,24 +4,42 @@ from rs_tools.install import install
 install()
 
 import argparse
+import numpy as np
+from rs_tools.utils import output, output_to_window, increase_image_size_limit
+from rs_tools.GLCM import generate_GLCM
 
 
 def main(args):
-    None
+    GLCM_matrices = generate_GLCM(args.input)
+
+    entropy_img = []
+    for i in range(len(GLCM_matrices)):
+        entropy_row = []
+        for j in range(len(GLCM_matrices[0])):
+            C = GLCM_matrices[i][j]
+            e = np.finfo(float).eps
+            normalization_divisor = np.sum(C)
+
+            entropy = np.sum(np.multiply(C, np.log(C + e))) / normalization_divisor
+            entropy_row.append(entropy)
+
+        entropy_img.append(entropy_row)
+
+    print(entropy_img)
+    output_to_window("entropy", entropy_img)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "--input", type=str, help="Please provide bands collection path"
-    )
+    parser.add_argument("--input", type=str, help="Please provide the input file")
     parser.add_argument(
         "--products",
         type=str,
         nargs="+",
         help="GLCM products to be generated",
         choices=["entropy", "energy", "contrast", "homogeneity", "dissimilarity"],
+        default=["entropy", "energy", "contrast", "homogeneity", "dissimilarity"],
     )
     parser.add_argument(
         "--extension",
