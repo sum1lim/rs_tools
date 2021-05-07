@@ -20,5 +20,6 @@ setup(
         ./scripts/gaussian
         ./scripts/contrast
         ./scripts/downscale
+        ./scripts/GLCM
     """.split(),
 )
