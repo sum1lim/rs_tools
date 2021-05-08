@@ -17,7 +17,7 @@ def install():
         import pip
     except ImportError:
         subprocess.call(
-            [sys.executable, "-m", "pip", "install", "--user", "upgrade", "pip==9.0.3"]
+            [sys.executable, "-m", "pip", "install", "--user", "upgrade", "pip==21.1.1"]
         )
     finally:
         import pip
@@ -28,3 +28,4 @@ def install():
     pip_install("scipy", "scipy")
     pip_install("matplotlib", "matplotlib")
     pip_install("skimage", "scikit-image")
+    pip_install("tqdm", "tqdm")
