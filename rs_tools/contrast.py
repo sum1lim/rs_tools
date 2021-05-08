@@ -3,12 +3,7 @@ from PIL import Image
 from rs_tools.utils import pix_val_list, increase_image_size_limit
 
 
-def contrast(inFile):
-    try:
-        inImage = np.array(pix_val_list(Image.open(inFile, "r")))
-    except Image.DecompressionBombError:
-        inImage = increase_image_size_limit(inFile)
-
+def contrast(inImage):
     minValue = np.min(inImage)
     maxValue = np.max(inImage)
 

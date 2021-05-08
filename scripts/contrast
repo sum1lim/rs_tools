@@ -9,7 +9,12 @@ def main(args):
     inFile = args.input
     inFile_name = args.input.split("/")[-1].split(".")[-2]
 
-    outImage = contrast(inFile)
+    try:
+        inImage = np.array(pix_val_list(Image.open(inFile, "r")))
+    except Image.DecompressionBombError:
+        inImage = increase_image_size_limit(inFile)
+
+    outImage = contrast(inImage)
     output_to_window(f"{inFile_name}.{args.extension}", outImage, flip=args.flip)
 
     if args.extension:

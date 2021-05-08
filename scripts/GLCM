@@ -5,28 +5,130 @@ install()
 
 import argparse
 import numpy as np
-from rs_tools.utils import output, output_to_window, increase_image_size_limit
+import time
+from rs_tools.utils import output, output_to_window, decompose_filepath
 from rs_tools.GLCM import generate_GLCM
+from rs_tools.contrast import contrast
+
+
+def generate_entropy(C, normalization_divisor):
+    e = np.finfo(float).eps
+    entropy = np.sum(-np.multiply(C, np.log(C + e))) / normalization_divisor
+
+    return entropy
+
+
+def generate_energy(C, normalization_divisor):
+    energy = np.sum(np.square(C)) / normalization_divisor
+
+    return energy
+
+
+def generate_contrast(C, normalization_divisor):
+    contrast_sum = 0
+    for i in range(len(C)):
+        for j in range(len(C)):
+            contrast_sum += ((abs(i - j)) ** 2) * C[i][j]
+
+    contrast = contrast_sum / normalization_divisor
+    return contrast
+
+
+def generate_homogeneity(C, normalization_divisor):
+    homogeneity_sum = 0
+    for i in range(len(C)):
+        for j in range(len(C)):
+            homogeneity_sum += C[i][j] / (1 + (abs(i - j)) ** 2)
+
+    homogeneity = homogeneity_sum / normalization_divisor
+    return homogeneity
+
+
+def generate_dissimilarity(C, normalization_divisor):
+    dissimilarity_sum = 0
+    for i in range(len(C)):
+        for j in range(len(C)):
+            dissimilarity_sum += abs(i - j) * C[i][j]
+
+    dissimilarity = dissimilarity_sum / normalization_divisor
+    return dissimilarity
+
+
+def deselect_empty_images(images, inFile_path, extension=None):
+    for k in images.keys:
+        if images[k] != []:
+            outImage = output_to_window(k, contrast(images[k]))
+            if extension:
+                mkdir_output(inFile_path, "GLCM", extension, outImage)
 
 
 def main(args):
+    print("Generating GLCM matrices")
+    start = time.time()
     GLCM_matrices = generate_GLCM(args.input)
+    end = time.time()
+    print(f"Elapsed time: {end - start}s")
 
-    entropy_img = []
-    for i in range(len(GLCM_matrices)):
+    entropy_img, energy_img, contrast_img, homogeneity_img, dissimilarity_img = (
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
+    images = {
+        "entropy": entropy_img,
+        "enegy": energy_img,
+        "contrast": contrast_img,
+        "homogeneity": homogeneity_img,
+        "dissimilarity": dissimilarity_img,
+    }
+
+    print(f"Generating GLCM products: {args.products}")
+    start = time.time()
+    for row in range(len(GLCM_matrices)):
         entropy_row = []
-        for j in range(len(GLCM_matrices[0])):
-            C = GLCM_matrices[i][j]
-            e = np.finfo(float).eps
+        energy_row = []
+        contrast_row = []
+        homogeneity_row = []
+        dissimilarity_row = []
+
+        for col in range(len(GLCM_matrices[0])):
+            C = GLCM_matrices[row][col]
             normalization_divisor = np.sum(C)
 
-            entropy = np.sum(np.multiply(C, np.log(C + e))) / normalization_divisor
-            entropy_row.append(entropy)
+            if "entropy" in args.products:
+                entropy = generate_entropy(C, normalization_divisor)
+                entropy_row.append(entropy)
+
+            if "energy" in args.products:
+                energy = generate_energy(C, normalization_divisor)
+                energy_row.append(energy)
+
+            if "contrast" in args.products:
+                contrast = generate_contrast(C, normalization_divisor)
+                contrast_row.append(contrast)
+
+            if "homogeneity" in args.products:
+                homogeneity = generate_homogeneity(C, normalization_divisor)
+                homogeneity_row.append(homogeneity)
+
+            if "dissimilarity" in args.products:
+                dissimilarity = generate_dissimilarity(C, normalization_divisor)
+                dissimilarity_row.append(dissimilarity)
 
         entropy_img.append(entropy_row)
+        energy_img.append(energy_row)
+        contrast_img.append(contrast_row)
+        homogeneity_img.append(homogeneity_row)
+        dissimilarity_img.append(dissimilarity_row)
 
-    print(entropy_img)
-    output_to_window("entropy", entropy_img)
+        print(f"{100*((row+1)/len(GLCM_matrices))}% processed")
+
+    end = time.time()
+    print(f"Elapsed time: {end - start}s")
+
+    deselect_empty_images(images, args.input, args.extension)
 
 
 if __name__ == "__main__":
