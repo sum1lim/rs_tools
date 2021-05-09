@@ -159,12 +159,15 @@ def generate_K_means(inFiles_li, iterations, num_classes):
     clustered_image = np.zeros(
         inImage.shape, dtype=[("x", "int"), ("y", "int"), ("z", "int")]
     )
+    labeled_image = np.zeros(inImage.shape, dtype=int)
+
     for count, label in enumerate(result):
         row = count // clustered_image.shape[1]
         column = count - row * clustered_image.shape[1]
         clustered_image[row][column] = colors[label]
+        labeled_image[row][column] = label
 
-    return clustered_image
+    return clustered_image, labeled_image
 
     # try:
     #     print("NIR = " + inDir + "/" + NIR + extension)
