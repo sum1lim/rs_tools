@@ -81,34 +81,6 @@ def main(args):
         outDir = f"{inDir}_KMeans"
         write_stats(labeled_image, outDir)
 
-    # print_stats(pix_location, pix_count)
-
-    # output_name = args.input.split("/")[-1] + "_KMeans"
-    # output_to_window(output_name, pix_val)
-
-    # plot_output_name = output_name + "_plot"
-    # output_to_window(plot_output_name, plot_val)
-
-    # if args.extension:
-    #     outDir = f"{inDir}_KMeans"
-    #     try:
-    #         os.mkdir(outDir)
-    #     except FileExistsError:
-    #         None
-    #     classifiedFile = re.sub(
-    #         "$", f"/{args.VIS}_{args.NIR}_KMeans.{args.extension}", outDir
-    #     )
-
-    #     try:
-    #         output(classifiedFile, pix_val)
-    #     except ValueError:
-    #         print("Not a valid file type")
-
-    #     plotFile = re.sub("$", f"/{args.VIS}_{args.NIR}_KMeans_plot.png", outDir)
-    #     output(plotFile, plot_val)
-
-    #     write_stats(args, pix_location, pix_count, outDir)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -121,9 +93,6 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         help="Feature bands used for clustering.",
-    )
-    parser.add_argument(
-        "--num_iterations", type=int, help="Define the number of iterations"
     )
     parser.add_argument(
         "--num_classes", type=int, help="Define the number of classes from 1 to 7"
