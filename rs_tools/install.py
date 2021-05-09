@@ -28,4 +28,5 @@ def install():
     pip_install("scipy", "scipy")
     pip_install("matplotlib", "matplotlib")
     pip_install("skimage", "scikit-image")
+    pip_install("sklearn", "scikit-learn")
     pip_install("tqdm", "tqdm")

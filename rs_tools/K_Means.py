@@ -4,9 +4,11 @@ import random
 import re
 import sys
 import os
+import cv2
 
-import numpy
+import numpy as np
 from PIL import Image, ImageFile, ImageDraw
+from sklearn.cluster import KMeans
 
 colors = [
     (255, 0, 0),
@@ -15,10 +17,10 @@ colors = [
     (255, 255, 0),
     (255, 0, 255),
     (0, 255, 255),
-    (0, 0, 0),
     (255, 255, 255),
+    (0, 0, 0),
 ]
-colorNames = ["Red", "Green", "Blue", "Yellow", "Magenta", "Cyan", "Black", "White"]
+colorNames = ["Red", "Green", "Blue", "Yellow", "Magenta", "Cyan", "White", "Black"]
 
 
 def mean(points):
@@ -56,7 +58,7 @@ def clustering(firstCoord, secondCoord, K, B):
         i += 1
 
     count = 0
-    cart_dimension = [0,0]
+    cart_dimension = [0, 0]
     while count < K:
         cart_location = {}
         pix_location = {}
@@ -98,14 +100,14 @@ def clustering(firstCoord, secondCoord, K, B):
 def plot(cart_location, cart_dimension):
     plot = []
     i = 0
-    while i < cart_dimension[1]+4:
+    while i < cart_dimension[1] + 4:
         j = 0
         row = []
         row.append(colors[6])
         row.append(colors[6])
         row.append(colors[6])
 
-        while j < cart_dimension[0]+4:
+        while j < cart_dimension[0] + 4:
             if i > 2:
                 row.append(colors[7])
             else:
@@ -130,40 +132,73 @@ def plot(cart_location, cart_dimension):
     return plot
 
 
-def generate_K_means(inDir, NIR, VIS, extension, iterations, No_classes):
-    try:
-        print("NIR = " + inDir + "/" + NIR + extension)
-        print("VIS = " + inDir + "/" + VIS + extension)
-        NIR_dict = extract(inDir + "/" + NIR + extension)
-        VIS_dict = extract(inDir + "/" + VIS + extension)
-    except:
-        print("The given file path is not valid or does not exist", file=sys.stderr)
-        exit(1)
+def image_to_array(inImage):
+    output_array = np.array([])
+    for row in inImage:
+        output_array = np.concatenate((output_array, row), axis=None)
 
-    K = iterations
-    B = No_classes
-    try:
-        K = int(K)
-        B = int(B)
-    except ValueError:
-        print("Only integer values are accepted.", file=sys.stderr)
-        exit(3)
-    if int(B) >= len(colors):
-        print("# of classes allowed up to and including 7", file=sys.stderr)
-        exit(4)
+    return np.array([output_array])
 
-    firstCoord = NIR_dict["R"]
-    secondCoord = VIS_dict["G"]
 
-    (pix_location, cart_location, cart_dimension) = clustering(firstCoord, secondCoord, K, B)
+def generate_K_means(inFiles_li, iterations, num_classes):
+    for count, inFile in enumerate(inFiles_li):
+        inImage = cv2.imread(inFile, 0)
+        if count == 0:
+            feature_vector_matrix = image_to_array(inImage)
+        else:
+            feature_vector_matrix = np.append(
+                feature_vector_matrix, image_to_array(inImage), axis=0
+            )
 
-    pix_val = firstCoord[:]
-    pix_count = 0
-    for c in pix_location.keys():
-        for location in pix_location[c]:
-            pix_val[location[0]][location[1]] = colors[c]
-        pix_count += len(pix_location[c])
+    result = (
+        KMeans(n_clusters=num_classes, random_state=0)
+        .fit(feature_vector_matrix.T)
+        .labels_
+    )
 
-    plot_val = plot(cart_location, cart_dimension)
+    clustered_image = np.zeros(
+        inImage.shape, dtype=[("x", "int"), ("y", "int"), ("z", "int")]
+    )
+    for count, label in enumerate(result):
+        row = count // clustered_image.shape[1]
+        column = count - row * clustered_image.shape[1]
+        clustered_image[row][column] = colors[label]
 
-    return pix_val, plot_val, pix_location, pix_count
+    return clustered_image
+
+    # try:
+    #     print("NIR = " + inDir + "/" + NIR + extension)
+    #     print("VIS = " + inDir + "/" + VIS + extension)
+    #     NIR_dict = extract(inDir + "/" + NIR + extension)
+    #     VIS_dict = extract(inDir + "/" + VIS + extension)
+    # except:
+    #     print("The given file path is not valid or does not exist", file=sys.stderr)
+    #     exit(1)
+
+    # K = iterations
+    # B = No_classes
+    # try:
+    #     K = int(K)
+    #     B = int(B)
+    # except ValueError:
+    #     print("Only integer values are accepted.", file=sys.stderr)
+    #     exit(3)
+    # if int(B) >= len(colors):
+    #     print("# of classes allowed up to and including 7", file=sys.stderr)
+    #     exit(4)
+
+    # firstCoord = NIR_dict["R"]
+    # secondCoord = VIS_dict["G"]
+
+    # (pix_location, cart_location, cart_dimension) = clustering(firstCoord, secondCoord, K, B)
+
+    # pix_val = firstCoord[:]
+    # pix_count = 0
+    # for c in pix_location.keys():
+    #     for location in pix_location[c]:
+    #         pix_val[location[0]][location[1]] = colors[c]
+    #     pix_count += len(pix_location[c])
+
+    # plot_val = plot(cart_location, cart_dimension)
+
+    # return pix_val, plot_val, pix_location, pix_count
