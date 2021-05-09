@@ -14,6 +14,20 @@ from rs_tools.utils import output, output_to_window
 from rs_tools.K_Means import generate_K_means, colorNames, colors
 
 
+def print_stats(stats_dict, total_num_pixels):
+    print("\nResult:")
+    for c in stats_dict.keys():
+        print(
+            colorNames[c]
+            + ": "
+            + str(stats_dict[c])
+            + "pixels ("
+            + str((stats_dict[c] / total_num_pixels) * 100)
+            + "%)"
+        )
+    print("\nTotal: " + str(total_num_pixels) + "pixels")
+
+
 def write_stats(labeled_image, outDir):
     try:
         os.mkdir(outDir)
@@ -24,6 +38,8 @@ def write_stats(labeled_image, outDir):
         unique_colors, counts = np.unique(labeled_image, return_counts=True)
         stats_dict = dict(zip(unique_colors, counts))
         total_num_pixels = sum(stats_dict.values())
+
+        print_stats(stats_dict, total_num_pixels)
 
         writer = csv.writer(statsFile)
         writer.writerow(["class", "#pixels", "pecentage(%)"])
@@ -36,20 +52,6 @@ def write_stats(labeled_image, outDir):
                 ]
             )
         writer.writerow(["total", total_num_pixels, 100])
-
-
-def print_stats(pix_location, pix_count):
-    print("\nResult:")
-    for c in pix_location.keys():
-        print(
-            colorNames[c]
-            + ": "
-            + str(len(pix_location[c]))
-            + "pixels ("
-            + str((len(pix_location[c]) / pix_count) * 100)
-            + "%)"
-        )
-    print("\nTotal: " + str(pix_count) + "pixels")
 
 
 def main(args):
