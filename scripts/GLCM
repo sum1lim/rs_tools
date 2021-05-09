@@ -81,7 +81,7 @@ def main(args):
     )
     images = {
         "entropy": entropy_img,
-        "enegy": energy_img,
+        "energy": energy_img,
         "contrast": contrast_img,
         "homogeneity": homogeneity_img,
         "dissimilarity": dissimilarity_img,
