@@ -71,15 +71,15 @@ def main(args):
     if features != []:
         sys.exit("At least one of the input features does not exist.")
 
-    clustered_image, labeled_image = generate_K_means(
-        inFiles_li, args.num_iterations, args.num_classes
-    )
+    clustered_image, labeled_image = generate_K_means(inFiles_li, args.num_classes)
 
     output_to_window("clustered", clustered_image.tolist())
 
     if args.extension:
         outDir = f"{inDir}_KMeans"
         write_stats(labeled_image, outDir)
+
+        output(f"{outDir}/KMeans.{args.extension}", clustered_image.tolist())
 
 
 if __name__ == "__main__":

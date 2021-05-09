@@ -31,7 +31,7 @@ def image_to_array(inImage):
     return np.array([output_array])
 
 
-def generate_K_means(inFiles_li, iterations, num_classes):
+def generate_K_means(inFiles_li, num_classes):
     for count, inFile in enumerate(inFiles_li):
         inImage = cv2.imread(inFile, 0)
         if count == 0:
