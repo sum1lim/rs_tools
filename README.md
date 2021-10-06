@@ -1,5 +1,10 @@
 # Remote Sensing Image Processing Tools                        
 ## rs-tools provides Python programs for Remote Sensing image processing. 
+- A set of programs that are widely used in optical/microwave Remote Sensing
+- Image processing tools of RGB extractor/merger, contrast enhancer, Gaussian filter, Sobel filter, etc.
+- NDVI feature generator for vegetation detection
+- K-Means unsupervised classification program
+
 *Third-party Python Libraries used: [matplotlib](https://pypi.org/project/matplotlib/), [numpy](https://pypi.org/project/numpy/), [opencv-python](https://pypi.org/project/opencv-python/), [Pillow](https://pypi.org/project/Pillow/), [scikit-image](https://pypi.org/project/scikit-image/), [scikit-learn](https://pypi.org/project/scikit-learn/), [scipy](https://pypi.org/project/scipy/) and [tqdm](https://pypi.org/project/tqdm/)
 **To install the package:**
 ```
